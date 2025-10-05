@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 2: 如何与 LLM 对话 - 从 Prompt 到实战</title>
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- 开场页 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1>Class 2</h1>
+                <h2 style="color: var(--highlight-color);">如何与 LLM 对话</h2>
+                <h3>从 Prompt 到实战</h3>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        上节课：我们理解了 LLM 是什么<br/>
+                        今天：我们学会如何<strong style="color: var(--primary-color);">驾驭</strong> LLM
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <p class="highlight" style="padding: 15px;">
+                        🎯 目标：学会用"系统的语言"跟 LLM 说话
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 1. Warm-up 复习 ========== -->
+
+            <!-- 1.1 复习：上节课学了什么 -->
+            <section class="scrollable-slide">
+                <h2>🔄 复习：Class 1 核心概念</h2>
+                <p class="small-text">回顾我们学到的关键知识</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="summary-box" style="padding: 20px; background: rgba(0,212,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px;">✅ 我们学了什么？</h4>
+                        <ul style="text-align: left; font-size: 0.9em; line-height: 1.8;">
+                            <li><strong>系统</strong> = 输入 → 处理 → 输出</li>
+                            <li><strong>数据</strong>分为结构化和非结构化</li>
+                            <li><strong>JSON 和 REST API</strong> 让系统互相沟通</li>
+                            <li><strong>LLM</strong> 是一种特殊的系统，处理的是语言</li>
+                            <li><strong>LLM = 超级胶水</strong>，能让语言成为 API</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.9em; padding: 12px;">
+                        💡 关键突破：LLM 让"自然语言"变成了"系统接口"
+                    </p>
+                </div>
+            </section>
+
+            <!-- 1.2 引导性提问 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+                <h2>💭 思考时刻</h2>
+
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.2em; line-height: 1.8; color: var(--primary-color);">
+                        如果 LLM 能听懂自然语言，<br/>
+                        那我们要<strong>怎样"跟它说话"</strong><br/>
+                        才最有效？
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto;">
+                        <div style="padding: 20px; background: rgba(255,107,107,0.1); border: 2px solid rgba(255,107,107,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.85em; margin: 0;">❌ 随便说</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em;">"帮我写点东西"</p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.85em; margin: 0;">✅ 精确指令</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em;">"写一段100字的产品介绍"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="font-size: 1.1em; color: var(--highlight-color);">
+                        今天我们要学习如何跟 LLM 说<strong>"系统的语言"</strong>
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 2. Prompt 基础 ========== -->
+
+            <!-- 2.1 什么是 Prompt -->
+            <section class="scrollable-slide">
+                <h2>🧠 什么是 Prompt？</h2>
+                <p class="small-text">人类写给机器的指令</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 1em;">定义</h4>
+                        <p style="font-size: 0.9em; line-height: 1.8;">
+                            <strong>Prompt</strong> = 你输入给 LLM 的<strong>完整指令</strong><br/>
+                            就像给助手下达的工作要求
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: flex; gap: 20px; justify-content: center;">
+                        <div style="flex: 1; padding: 15px; background: rgba(255,107,107,0.1); border-radius: 8px; max-width: 400px;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>❌ 糟糕的 Prompt</strong></p>
+                            <div class="json-box" style="font-size: 0.7em; padding: 10px;">
+                                <p style="margin: 0;">"写作业"</p>
+                            </div>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em; color: #ff6b6b;">
+                                模糊、不可控、结果不稳定
+                            </p>
+                        </div>
+                        <div style="flex: 1; padding: 15px; background: rgba(0,212,255,0.1); border-radius: 8px; max-width: 400px;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>✅ 优秀的 Prompt</strong></p>
+                            <div class="json-box" style="font-size: 0.7em; padding: 10px;">
+                                <p style="margin: 0;">"你是助教。提取作业信息，用 JSON 格式输出 {科目, 内容, 截止日期}"</p>
+                            </div>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em; color: var(--primary-color);">
+                                清晰、可控、结果稳定
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.85em; padding: 10px;">
+                        优秀的 Prompt 能让 LLM 输出<strong>稳定、可控</strong>的结果
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2.2 Prompt 的四大组成 -->
+            <section class="scrollable-slide">
+                <h2>Prompt 的四大组成部分</h2>
+                <p class="small-text">让你的指令更精确</p>
+
+                <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                        <h4 style="font-size: 0.9em; color: var(--primary-color); margin-bottom: 10px;">1️⃣ 角色指令（Role）</h4>
+                        <p style="font-size: 0.75em; margin-bottom: 8px;">告诉 LLM 它扮演什么角色</p>
+                        <div class="example-box" style="padding: 8px; font-size: 0.7em;">
+                            <p style="margin: 0;">"你是一位<strong>助教</strong>"</p>
+                            <p style="margin: 5px 0 0 0;">"你是一个<strong>日程整理助手</strong>"</p>
+                            <p style="margin: 5px 0 0 0;">"你是<strong>新闻摘要员</strong>"</p>
+                        </div>
+                    </div>
+
+                    <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                        <h4 style="font-size: 0.9em; color: var(--primary-color); margin-bottom: 10px;">2️⃣ 任务指令（Task）</h4>
+                        <p style="font-size: 0.75em; margin-bottom: 8px;">明确要完成什么任务</p>
+                        <div class="example-box" style="padding: 8px; font-size: 0.7em;">
+                            <p style="margin: 0;">"请帮我<strong>提取</strong>这段文字中的作业信息"</p>
+                            <p style="margin: 5px 0 0 0;">"请<strong>总结</strong>这篇文章的要点"</p>
+                        </div>
+                    </div>
+
+                    <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                        <h4 style="font-size: 0.9em; color: var(--primary-color); margin-bottom: 10px;">3️⃣ 格式指令（Format）</h4>
+                        <p style="font-size: 0.75em; margin-bottom: 8px;">要求特定的输出格式</p>
+                        <div class="example-box" style="padding: 8px; font-size: 0.7em;">
+                            <p style="margin: 0;">"用 <strong>JSON 格式</strong>输出"</p>
+                            <p style="margin: 5px 0 0 0;">"用<strong>表格</strong>形式展示"</p>
+                            <p style="margin: 5px 0 0 0;">"<strong>3 个要点</strong>，每个不超过 20 字"</p>
+                        </div>
+                    </div>
+
+                    <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                        <h4 style="font-size: 0.9em; color: var(--primary-color); margin-bottom: 10px;">4️⃣ 限制指令（Constraints）</h4>
+                        <p style="font-size: 0.75em; margin-bottom: 8px;">设定边界和约束</p>
+                        <div class="example-box" style="padding: 8px; font-size: 0.7em;">
+                            <p style="margin: 0;">"<strong>不要</strong>输出任何解释文字"</p>
+                            <p style="margin: 5px 0 0 0;">"<strong>只要 JSON</strong>，不要其他内容"</p>
+                            <p style="margin: 5px 0 0 0;">"字数<strong>不超过 100 字</strong>"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.85em; padding: 10px;">
+                        💡 四个部分组合 = 完整、精确的 Prompt
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2.3 课堂示例 -->
+            <section class="scrollable-slide">
+                <h2>📝 课堂示例：作业提取助手</h2>
+                <p class="small-text">完整的 Prompt 示例</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <p style="font-size: 0.8em; margin-bottom: 15px;"><strong>完整 Prompt：</strong></p>
+                        <div class="json-box" style="padding: 15px; font-size: 0.75em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一名<span style="color: var(--primary-color);">中学作业助手</span>。
+
+请从以下文字中<span style="color: var(--primary-color);">提取</span>课程名称、作业内容和截止日期，
+并以 <span style="color: var(--primary-color);">JSON 格式</span>输出。
+
+<span style="color: var(--highlight-color);">不要输出任何解释文字，只要 JSON。</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>📥 输入文本：</strong></p>
+                            <div class="example-box" style="padding: 12px; font-size: 0.75em;">
+                                <p style="margin: 0;">"老师说：本周五前交英语作文，题目是'My Future City'。"</p>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5em; align-self: center;">→</div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>📤 LLM 输出：</strong></p>
+                            <div class="json-box" style="padding: 12px; font-size: 0.7em; background: rgba(255,217,61,0.1); border-color: var(--highlight-color);">
+<pre style="margin: 0; text-align: left;"><code>{
+  "subject": "英语",
+  "task": "作文 - My Future City",
+  "due_date": "周五"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.85em;">
+                        ✅ 角色 + 任务 + 格式 + 限制 = <strong style="color: var(--primary-color);">稳定的结构化输出</strong>
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2.4 实践活动 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>👥 小组活动：Prompt 优化</h2>
+                <p class="small-text">两人一组，5 分钟</p>
+
+                <div style="margin-top: 40px;">
+                    <div class="practice-box" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px;">🎯 任务</h4>
+                        <p style="font-size: 0.9em; line-height: 1.8;">
+                            给定场景：<strong>"从微信群聊中提取今天的课程安排"</strong>
+                        </p>
+                        <p style="font-size: 0.85em; margin-top: 15px;">
+                            1. 小组讨论，写出一个完整 Prompt<br/>
+                            2. 包含：角色、任务、格式、限制<br/>
+                            3. 比较不同组的版本，看哪个最清晰
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 提示：想一想输出的 JSON 应该包含哪些字段？<br/>
+                        （例如：课程名、时间、地点、老师...）
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 3. LLM 输出结构化结果 ========== -->
+
+            <!-- 3.1 为什么需要结构化输出 -->
+            <section class="scrollable-slide">
+                <h2>🔧 为什么需要结构化输出？</h2>
+                <p class="small-text">从模糊语言到机器可读</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: flex; gap: 30px; align-items: center; justify-content: center;">
+                        <div style="flex: 1; max-width: 400px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>❌ 自然语言输出</strong></p>
+                            <div class="example-box" style="padding: 15px; font-size: 0.75em; background: rgba(255,107,107,0.1);">
+                                <p style="margin: 0;">"这周五要交英语作文，题目是 My Future City。另外数学老师说周三带练习册。"</p>
+                            </div>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em; color: #ff6b6b;">
+                                模糊、难以解析、无法被程序直接使用
+                            </p>
+                        </div>
+
+                        <div style="font-size: 2em; color: var(--primary-color);">→</div>
+
+                        <div style="flex: 1; max-width: 400px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>✅ JSON 结构化输出</strong></p>
+                            <div class="json-box" style="padding: 15px; font-size: 0.65em; background: rgba(0,212,255,0.1);">
+<pre style="margin: 0; text-align: left;"><code>[
+  {
+    "subject": "英语",
+    "task": "作文",
+    "due_date": "周五"
+  },
+  {
+    "subject": "数学",
+    "task": "带练习册",
+    "due_date": "周三"
+  }
+]</code></pre>
+                            </div>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em; color: var(--primary-color);">
+                                清晰、可解析、程序可直接使用
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.9em; padding: 12px;">
+                        语言是模糊的，但<strong>系统需要结构化</strong><br/>
+                        LLM 生成 JSON = 把模糊语言 → 机器可读信息
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3.2 JSON Schema 思维 -->
+            <section class="scrollable-slide">
+                <h2>🎯 JSON Schema 思维</h2>
+                <p class="small-text">先定义结构，再让 LLM 填充</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 0.95em;">核心思想</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            你希望系统返回什么，就要<strong>先告诉它结构</strong>。<br/>
+                            就像填表格：先画好格子，再往里填内容。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>三步法：</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>Step 1</strong></p>
+                            <p style="font-size: 0.75em; margin-bottom: 10px;">设计数据结构</p>
+                            <div class="json-box" style="font-size: 0.65em; padding: 8px;">
+<pre style="margin: 0;"><code>{
+  "user": "",
+  "intent": "",
+  "action": "",
+  "time": ""
+}</code></pre>
+                            </div>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>Step 2</strong></p>
+                            <p style="font-size: 0.75em; margin-bottom: 10px;">在 Prompt 中说明</p>
+                            <div class="example-box" style="font-size: 0.65em; padding: 8px;">
+                                <p style="margin: 0;">"请以 JSON 格式输出，包含 user, intent, action, time"</p>
+                            </div>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>Step 3</strong></p>
+                            <p style="font-size: 0.75em; margin-bottom: 10px;">LLM 按模板输出</p>
+                            <div class="json-box" style="font-size: 0.65em; padding: 8px; background: rgba(255,217,61,0.1);">
+<pre style="margin: 0;"><code>{
+  "user": "张三",
+  "intent": "提醒",
+  "action": "交作业",
+  "time": "明天"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 这就像建筑师先画图纸，工人按图纸施工
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3.3 演示：对比三种输出 -->
+            <section class="scrollable-slide">
+                <h2>🎭 演示：三种输出对比</h2>
+                <p class="small-text">同一任务，不同输出质量</p>
+
+                <div style="margin-top: 25px;">
+                    <p style="font-size: 0.85em; margin-bottom: 15px;"><strong>任务：提取作业信息</strong></p>
+
+                    <div style="display: grid; gap: 15px;">
+                        <div class="fragment" style="padding: 12px; background: rgba(255,107,107,0.05); border-left: 4px solid #ff6b6b; border-radius: 5px;">
+                            <p style="font-size: 0.75em; margin-bottom: 8px; color: #ff6b6b;"><strong>❌ 普通输出（自然语言）</strong></p>
+                            <div class="example-box" style="font-size: 0.7em; padding: 10px;">
+                                <p style="margin: 0;">"需要完成英语作文，周五前交。"</p>
+                            </div>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.65em;">问题：无法被程序解析</p>
+                        </div>
+
+                        <div class="fragment" style="padding: 12px; background: rgba(255,165,0,0.05); border-left: 4px solid orange; border-radius: 5px;">
+                            <p style="font-size: 0.75em; margin-bottom: 8px; color: orange;"><strong>⚠️ JSON 输出（但有错误）</strong></p>
+                            <div class="json-box" style="font-size: 0.65em; padding: 10px;">
+<pre style="margin: 0;"><code>// 这是英语作业
+{
+  "subject": "英语",
+  "task": "作文",  // 周五前完成
+  "due_date": "周五"
+}</code></pre>
+                            </div>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.65em;">问题：包含注释，JSON 解析器会报错</p>
+                        </div>
+
+                        <div class="fragment" style="padding: 12px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.75em; margin-bottom: 8px; color: var(--primary-color);"><strong>✅ 完美的 JSON 输出</strong></p>
+                            <div class="json-box" style="font-size: 0.65em; padding: 10px; background: rgba(255,217,61,0.1);">
+<pre style="margin: 0;"><code>{
+  "subject": "英语",
+  "task": "作文 - My Future City",
+  "due_date": "周五"
+}</code></pre>
+                            </div>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.65em; color: var(--primary-color);">
+                                ✓ 纯 JSON ✓ 无注释 ✓ 可直接使用
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        关键：在 Prompt 中明确要求"只要 JSON，不要解释"
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3.4 进阶练习 -->
+            <section class="scrollable-slide">
+                <h2>🚀 进阶练习：设计任务对象</h2>
+                <p class="small-text">输出更复杂的结构化数据</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="practice-box" style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px;">
+                        <h4 style="font-size: 0.95em; margin-bottom: 15px;">🎯 目标</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            让 LLM 从一句话中提取：<strong>谁、要做什么、什么时候</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>📥 输入示例：</strong></p>
+                            <div class="example-box" style="padding: 12px; font-size: 0.75em;">
+                                <p style="margin: 0;">"提醒张三明天早上8点交物理作业"</p>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5em; align-self: center;">→</div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>📤 期望输出：</strong></p>
+                            <div class="json-box" style="padding: 12px; font-size: 0.65em; background: rgba(255,217,61,0.1);">
+<pre style="margin: 0;"><code>{
+  "user": "张三",
+  "intent": "提醒",
+  "action": "交物理作业",
+  "time": "明天早上8点"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>💡 试试这些输入：</strong></p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.7em;">
+                        <div class="example-box" style="padding: 8px;">
+                            <p style="margin: 0;">"帮李四预约周三下午看牙医"</p>
+                        </div>
+                        <div class="example-box" style="padding: 8px;">
+                            <p style="margin: 0;">"提醒全班同学后天带学生证"</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== 4. 实操：Dify / Coze 平台 ========== -->
+
+            <!-- 4.1 平台介绍 -->
+            <section class="scrollable-slide">
+                <h2>⚙️ 实战平台：Dify vs Coze</h2>
+                <p class="small-text">两个强大的 LLM 应用开发平台</p>
+
+                <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                    <div class="fragment" style="padding: 20px; background: rgba(102,126,234,0.1); border: 2px solid rgba(102,126,234,0.3); border-radius: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                                D
+                            </div>
+                            <h3 style="margin: 0; font-size: 1em;">Dify.ai</h3>
+                        </div>
+                        <ul style="text-align: left; font-size: 0.8em; line-height: 1.8;">
+                            <li><strong>特点</strong>：Workflow 工作流设计</li>
+                            <li><strong>适合</strong>：复杂的多步骤任务</li>
+                            <li><strong>优势</strong>：可视化流程、变量传递</li>
+                            <li><strong>场景</strong>：数据处理、自动化流程</li>
+                        </ul>
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;">
+                            <p style="font-size: 0.7em; margin: 0;">🔗 <a href="https://dify.ai" target="_blank" style="color: var(--primary-color);">dify.ai</a></p>
+                        </div>
+                    </div>
+
+                    <div class="fragment" style="padding: 20px; background: rgba(255,107,107,0.1); border: 2px solid rgba(255,107,107,0.3); border-radius: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                                C
+                            </div>
+                            <h3 style="margin: 0; font-size: 1em;">Coze.com</h3>
+                        </div>
+                        <ul style="text-align: left; font-size: 0.8em; line-height: 1.8;">
+                            <li><strong>特点</strong>：对话式 Bot 构建</li>
+                            <li><strong>适合</strong>：多轮对话、聊天机器人</li>
+                            <li><strong>优势</strong>：易于集成微信/QQ/Discord</li>
+                            <li><strong>场景</strong>：客服机器人、助手应用</li>
+                        </ul>
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;">
+                            <p style="font-size: 0.7em; margin: 0;">🔗 <a href="https://www.coze.com" target="_blank" style="color: var(--primary-color);">coze.com</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.85em; padding: 12px;">
+                        💡 今天我们用 Dify 演示，因为更容易看到数据流动
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.2 项目目标 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
+                <h2>🎯 实战项目目标</h2>
+
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 1.1em; line-height: 1.8; color: var(--primary-color);">
+                        创建一个<strong>"小型智能系统"</strong>
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="background: rgba(0,212,255,0.1); padding: 25px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.3);">
+                        <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>系统流程：</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; min-width: 150px;">
+                                <p style="font-size: 0.8em; margin: 0;">📝 学生输入一句话</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; min-width: 150px;">
+                                <p style="font-size: 0.8em; margin: 0;">🤖 LLM 识别意图</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; min-width: 150px;">
+                                <p style="font-size: 0.8em; margin: 0;">📤 输出 JSON</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
+                            <div style="padding: 15px; background: rgba(255,217,61,0.2); border: 2px solid var(--highlight-color); border-radius: 8px; min-width: 150px;">
+                                <p style="font-size: 0.8em; margin: 0; color: var(--highlight-color);">✅ 执行动作</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 35px;">
+                    <p style="font-size: 0.9em; line-height: 1.8;">
+                        <strong>示例场景：</strong><br/>
+                        输入："提醒我周三带数学练习册"<br/>
+                        → LLM 输出 JSON<br/>
+                        → 系统发送提醒或写入日程表
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.3 Dify 实践步骤 -->
+            <section class="scrollable-slide">
+                <h2>🛠️ Dify 实践步骤</h2>
+                <p class="small-text">跟着老师一步步操作</p>
+
+                <div style="margin-top: 25px;">
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 1: 创建应用</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>打开 Dify.ai，注册/登录</li>
+                            <li>点击"创建应用" → 选择 <strong>"Workflow 工作流"</strong></li>
+                            <li>命名：例如"作业提醒助手"</li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 2: 添加输入节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>拖入 <strong>"Input"</strong> 模块</li>
+                            <li>设置输入类型：文本（Text）</li>
+                            <li>变量名：<code>user_input</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 3: 配置 LLM 节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>拖入 <strong>"LLM"</strong> 模块</li>
+                            <li>选择模型：DeepSeek / GPT-3.5 / 其他</li>
+                            <li>编写 Prompt（见下页示例）</li>
+                            <li>输入变量：<code>{{user_input}}</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 4: 添加输出节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>拖入 <strong>"Output"</strong> 模块</li>
+                            <li>连接 LLM 输出</li>
+                            <li>测试运行</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <p style="font-size: 0.8em; color: var(--highlight-color);">
+                        💡 每一步都可以看到数据在节点间流动！
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.4 Prompt 示例（for Dify） -->
+            <section class="scrollable-slide">
+                <h2>📋 Dify 中的 Prompt 示例</h2>
+                <p class="small-text">写在 LLM 节点中</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <div class="json-box" style="padding: 15px; font-size: 0.7em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一个任务提取助手。
+
+从用户输入中提取以下信息：
+- user: 针对谁的任务（如果没提到，写"自己"）
+- intent: 意图（提醒/预约/记录等）
+- action: 具体要做什么
+- time: 时间
+
+<span style="color: var(--highlight-color);">必须以纯 JSON 格式输出，不要任何解释。</span>
+
+用户输入：
+{{user_input}}
+
+输出格式：
+{
+  "user": "",
+  "intent": "",
+  "action": "",
+  "time": ""
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>关键点：</strong></p>
+                    <ul style="font-size: 0.75em; line-height: 1.8; text-align: left; max-width: 800px; margin: 0 auto;">
+                        <li>使用 <code style="color: var(--primary-color);">{{user_input}}</code> 引用输入变量</li>
+                        <li>明确要求 JSON 格式</li>
+                        <li>提供输出模板</li>
+                        <li>强调"不要解释"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 4.5 测试案例 -->
+            <section class="scrollable-slide">
+                <h2>🧪 测试你的工作流</h2>
+                <p class="small-text">尝试这些输入，看看效果</p>
+
+                <div style="margin-top: 30px; display: grid; gap: 15px;">
+                    <div class="fragment">
+                        <div style="display: flex; gap: 15px; align-items: stretch;">
+                            <div style="flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.75em; margin-bottom: 8px; color: #aaa;"><strong>测试案例 1:</strong></p>
+                                <p style="font-size: 0.8em; margin: 0;">"提醒我周三带数学练习册"</p>
+                            </div>
+                            <div style="font-size: 1.2em; align-self: center;">→</div>
+                            <div style="flex: 1; padding: 12px; background: rgba(255,217,61,0.1); border-radius: 8px;">
+                                <div class="json-box" style="font-size: 0.65em; padding: 8px;">
+<pre style="margin: 0;"><code>{
+  "user": "自己",
+  "intent": "提醒",
+  "action": "带数学练习册",
+  "time": "周三"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fragment">
+                        <div style="display: flex; gap: 15px; align-items: stretch;">
+                            <div style="flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.75em; margin-bottom: 8px; color: #aaa;"><strong>测试案例 2:</strong></p>
+                                <p style="font-size: 0.8em; margin: 0;">"帮李四预约明天下午2点见张老师"</p>
+                            </div>
+                            <div style="font-size: 1.2em; align-self: center;">→</div>
+                            <div style="flex: 1; padding: 12px; background: rgba(255,217,61,0.1); border-radius: 8px;">
+                                <div class="json-box" style="font-size: 0.65em; padding: 8px;">
+<pre style="margin: 0;"><code>{
+  "user": "李四",
+  "intent": "预约",
+  "action": "见张老师",
+  "time": "明天下午2点"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fragment">
+                        <div style="display: flex; gap: 15px; align-items: stretch;">
+                            <div style="flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.75em; margin-bottom: 8px; color: #aaa;"><strong>测试案例 3:</strong></p>
+                                <p style="font-size: 0.8em; margin: 0;">"记录今天完成了英语作文"</p>
+                            </div>
+                            <div style="font-size: 1.2em; align-self: center;">→</div>
+                            <div style="flex: 1; padding: 12px; background: rgba(255,217,61,0.1); border-radius: 8px;">
+                                <div class="json-box" style="font-size: 0.65em; padding: 8px;">
+<pre style="margin: 0;"><code>{
+  "user": "自己",
+  "intent": "记录",
+  "action": "完成英语作文",
+  "time": "今天"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; color: var(--primary-color);">
+                        💡 在 Dify 中，你可以实时看到每个节点的输入和输出！
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.6 进阶：添加动作节点 -->
+            <section class="scrollable-slide">
+                <h2>🚀 进阶：添加执行动作</h2>
+                <p class="small-text">让系统真正"做事"</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>可以添加的动作模块：</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📧 发送邮件</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">使用邮件 API 发送提醒</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📝 写入 Notion</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">自动创建 Notion 数据库条目</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>💬 发送消息</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">通过 Webhook 发到微信/钉钉</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📊 写入表格</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">保存到 Google Sheets / Excel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(255,217,61,0.1); padding: 20px; border-radius: 10px; border: 2px solid var(--highlight-color);">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>⚡ 关键理解：</strong></p>
+                        <p style="font-size: 0.8em; line-height: 1.8;">
+                            <strong>Prompt 的作用</strong>：把语言 → 结构化数据（JSON）<br/>
+                            <strong>动作模块的作用</strong>：把结构化数据 → 实际操作
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.75em; color: #aaa;">
+                        📌 今天我们专注于 Prompt + JSON 输出，动作模块可以课后探索
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.7 Coze 简介 -->
+            <section class="scrollable-slide">
+                <h2>🤖 Coze 平台简介</h2>
+                <p class="small-text">更适合对话式机器人</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <div>
+                            <p style="font-size: 0.85em; margin-bottom: 15px;"><strong>Coze 的特点：</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>专注于<strong>对话式交互</strong></li>
+                                <li>可以设定<strong>触发关键词</strong></li>
+                                <li>支持<strong>多轮对话记忆</strong></li>
+                                <li>内置<strong>插件系统</strong>（天气、搜索等）</li>
+                                <li>容易发布到微信、QQ、Discord</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85em; margin-bottom: 15px;"><strong>适合场景：</strong></p>
+                            <div class="example-box" style="padding: 12px; font-size: 0.75em; margin-bottom: 10px;">
+                                <p style="margin: 0;">📱 <strong>微信助手 Bot</strong></p>
+                                <p class="small-text" style="margin-top: 5px; font-size: 0.7em;">
+                                    "小助手，提醒我明天开会"
+                                </p>
+                            </div>
+                            <div class="example-box" style="padding: 12px; font-size: 0.75em; margin-bottom: 10px;">
+                                <p style="margin: 0;">🎓 <strong>学习答疑 Bot</strong></p>
+                                <p class="small-text" style="margin-top: 5px; font-size: 0.7em;">
+                                    持续对话，记住上下文
+                                </p>
+                            </div>
+                            <div class="example-box" style="padding: 12px; font-size: 0.75em;">
+                                <p style="margin: 0;">💭 <strong>情绪日记 Bot</strong></p>
+                                <p class="small-text" style="margin-top: 5px; font-size: 0.7em;">
+                                    每天记录心情和想法
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 Dify 看重工作流，Coze 看重对话体验
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 5. 展示与延伸 ========== -->
+
+            <!-- 5.1 小组展示环节 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>🎤 小组展示时间</h2>
+                <p class="small-text">分享你们的"智能小助手"</p>
+
+                <div style="margin-top: 40px;">
+                    <div class="practice-box" style="padding: 25px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 20px;">展示内容：</h4>
+                        <ul style="text-align: left; font-size: 0.85em; line-height: 2;">
+                            <li>你们的项目叫什么？解决什么问题？</li>
+                            <li>演示：输入一句话，展示 JSON 输出</li>
+                            <li>分享：遇到了什么困难？怎么解决的？</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 35px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>可能的项目示例：</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 0.75em;">
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">📚 作业提醒 Bot</p>
+                        </div>
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">📅 学习计划生成器</p>
+                        </div>
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">💭 情绪日志助手</p>
+                        </div>
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">🏃 运动打卡记录</p>
+                        </div>
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">🍔 饮食记录分析</p>
+                        </div>
+                        <div class="example-box" style="padding: 10px;">
+                            <p style="margin: 0;">🎯 目标追踪器</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5.2 Q&A 引导 -->
+            <section class="scrollable-slide">
+                <h2>❓ 同学提问环节</h2>
+                <p class="small-text">理解原理，提升认知</p>
+
+                <div style="margin-top: 35px;">
+                    <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>建议提问方向：</strong></p>
+
+                    <div style="display: grid; gap: 15px;">
+                        <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin: 0; color: var(--primary-color);">
+                                <strong>Q:</strong> "它是怎么识别时间的？"
+                            </p>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.7em;">
+                                💡 LLM 通过训练学会了理解中文的时间表达
+                            </p>
+                        </div>
+
+                        <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin: 0; color: var(--primary-color);">
+                                <strong>Q:</strong> "为什么用 JSON 输出？"
+                            </p>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.7em;">
+                                💡 因为程序需要结构化数据才能处理
+                            </p>
+                        </div>
+
+                        <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin: 0; color: var(--primary-color);">
+                                <strong>Q:</strong> "如果它识别错了怎么办？"
+                            </p>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.7em;">
+                                💡 改进 Prompt，添加更多限制条件和示例
+                            </p>
+                        </div>
+
+                        <div class="fragment" style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin: 0; color: var(--primary-color);">
+                                <strong>Q:</strong> "能处理多个任务的输入吗？"
+                            </p>
+                            <p class="small-text" style="margin-top: 8px; font-size: 0.7em;">
+                                💡 可以！让 LLM 输出数组格式 [task1, task2, ...]
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5.3 核心总结 -->
+            <section class="scrollable-slide">
+                <h2>🎓 今天的核心收获</h2>
+                <p class="small-text">Class 2 知识点总结</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="summary-box" style="padding: 25px; background: rgba(0,212,255,0.1); border-radius: 10px;">
+                        <ul style="text-align: left; font-size: 0.9em; line-height: 2;">
+                            <li><strong>Prompt</strong> = 人类写给 LLM 的精确指令</li>
+                            <li>优秀的 Prompt 包含：<strong>角色、任务、格式、限制</strong></li>
+                            <li>结构化输出（JSON）让 LLM 结果<strong>可被程序使用</strong></li>
+                            <li><strong>JSON Schema 思维</strong>：先定义结构，再让 LLM 填充</li>
+                            <li>Dify/Coze 等平台 = <strong>语言到动作</strong>的桥梁</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 35px;">
+                    <div style="background: rgba(255,217,61,0.1); padding: 20px; border-radius: 10px; border: 2px solid var(--highlight-color);">
+                        <p style="font-size: 0.95em; line-height: 1.8; color: var(--highlight-color);">
+                            <strong>🔑 关键认知转变：</strong><br/>
+                            今天你们不是在"聊天"，而是在<strong>"编程"</strong>，<br/>
+                            只不过用的是<strong>中文</strong>。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5.4 延伸与展望 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h2>🚀 延伸与展望</h2>
+
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 1em; margin-bottom: 25px;"><strong>接下来可以做什么？</strong></p>
+
+                    <div style="display: grid; gap: 20px;">
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>📚 进阶学习</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>学习更复杂的 Prompt 技巧（Few-shot, Chain-of-thought）</li>
+                                <li>探索 Langchain 等开发框架</li>
+                                <li>了解 Function Calling 和 Tool Use</li>
+                            </ul>
+                        </div>
+
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>🛠️ 实践项目</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>把你的助手发布到微信/QQ（Coze）</li>
+                                <li>连接真实的数据库（Notion / Airtable）</li>
+                                <li>加入定时任务（每天提醒）</li>
+                            </ul>
+                        </div>
+
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>💡 创意探索</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>为父母/老师创建一个实用工具</li>
+                                <li>解决学校/班级的实际问题</li>
+                                <li>参加 AI 应用开发比赛</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <p class="highlight" style="font-size: 1em; padding: 15px;">
+                        记住：AI 工具会越来越强大，<br/>
+                        但<strong>定义问题</strong>和<strong>设计系统</strong>的能力永远是你的核心竞争力。
+                    </p>
+                </div>
+            </section>
+
+            <!-- 结束页 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+                <h2>🎉 Class 2 完成！</h2>
+
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.1em; line-height: 1.8; color: var(--primary-color);">
+                        恭喜你掌握了<strong>"与 LLM 对话"</strong>的艺术！
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="font-size: 0.95em; line-height: 1.8;">
+                        从今天开始，你可以：<br/>
+                        ✅ 写出清晰的 Prompt<br/>
+                        ✅ 让 LLM 输出结构化数据<br/>
+                        ✅ 用平台构建实用的 AI 应用
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.2em; color: var(--highlight-color);">
+                        💭 最后一个思考：<br/>
+                        "你想用 LLM 解决生活中的哪个痛点？"
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p class="small-text">
+                        下节课见！🚀
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="node_modules/reveal.js/dist/reveal.js"></script>
+    <script type="module">
+        Reveal.initialize({
+            hash: true,
+            center: true,
+            transition: 'slide',
+            slideNumber: true,
+            controls: true,
+            progress: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            navigationMode: 'default',
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: true,
+            embedded: false,
+            help: true,
+            pause: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoAnimate: true,
+            autoAnimateMatcher: null,
+            autoAnimateDuration: 1.0,
+            autoAnimateUnmatched: true,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>

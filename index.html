@@ -1,813 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 与计算机技术演化 - 高中分享</title>
-    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
-    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
-    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <title>AI 教育课程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .card .meta {
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="reveal">
-        <div class="slides">
+    <div class="container">
+        <h1>🎓 AI 教育课程</h1>
+        <div class="cards">
+            <a href="class1.html" class="card">
+                <h2>第一课</h2>
+                <p><strong>AI 与计算机技术演化</strong></p>
+                <p>理解 AI 与计算机技术的发展脉络，了解大语言模型的诞生背景</p>
+                <div class="meta">🧠 人工智能维度 • 💻 计算机技术维度</div>
+            </a>
 
-            <!-- 第 1 页：开场 -->
-            <section class="scrollable-slide">
-                <h1>为什么要听这场分享？</h1>
-                <h3>快速理解 AI 与计算机技术的演化脉络</h3>
-                <div class="fragment">
-                    <ul>
-                        <li>想帮助大家在短时间内了解一些基本概念</li>
-                        <li>在任何专业学习中，我们都要先知道"体系"从哪里来</li>
-                    </ul>
-                </div>
-                <div class="fragment">
-                    <p><strong>我们今天从两个维度理解科技演化：</strong></p>
-                    <ul>
-                        <li>🧠 人工智能维度（思想与算法）</li>
-                        <li>💻 计算机技术维度（硬件与系统）</li>
-                    </ul>
-                </div>
-                <div class="fragment">
-                    <p class="highlight">大语言模型（LLM）正是这两条路线交汇的产物</p>
-                </div>
-            </section>
-
-            <!-- 第 2 页：什么是系统？ -->
-            <section class="scrollable-slide">
-                <h2>什么是系统？</h2>
-                <h3>系统 = 输入 → 处理 → 输出</h3>
-                <div class="fragment">
-                    <div class="example-box">
-                        <p><strong>计算器：</strong> 2 + 3 = 5</p>
-                    </div>
-                </div>
-                <div class="fragment">
-                    <div class="example-box">
-                        <p><strong>QQ 音乐：</strong> 点击播放 → 服务器 → 听到歌曲</p>
-                    </div>
-                </div>
-                <div class="fragment">
-                    <div class="example-box">
-                        <p><strong>学校：</strong> 上课 → 学习 → 成绩</p>
-                    </div>
-                </div>
-                <div class="fragment">
-                    <p class="interaction">💭 互动：生活中还有哪些系统？</p>
-                    <p class="small-text">（地铁、外卖、自动售货机）</p>
-                </div>
-            </section>
-
-            <!-- 第 3 页：数据的两种形态 -->
-            <section class="scrollable-slide">
-                <h2>数据的两种形态</h2>
-                <h3>结构化 vs 非结构化</h3>
-                <div style="display: flex; justify-content: space-around; margin-top: 40px;">
-                    <div class="fragment" style="flex: 1; margin: 0 20px;">
-                        <h4>📊 结构化</h4>
-                        <ul>
-                            <li>成绩表</li>
-                            <li>通讯录</li>
-                            <li>银行流水</li>
-                        </ul>
-                        <p class="analogy">= 整齐的书架</p>
-                    </div>
-                    <div class="fragment" style="flex: 1; margin: 0 20px;">
-                        <h4>📝 非结构化</h4>
-                        <ul>
-                            <li>作文</li>
-                            <li>照片</li>
-                            <li>短视频</li>
-                            <li>朋友圈动态</li>
-                        </ul>
-                        <p class="analogy">= 乱糟糟的房间</p>
-                    </div>
-                </div>
-                <div class="fragment">
-                    <p class="highlight">传统系统最擅长处理结构化数据</p>
-                </div>
-            </section>
-
-            <!-- 第 3.5 页：JSON - 数据的通用语言 -->
-            <section class="scrollable-slide">
-                <h2>JSON - 数据的通用语言</h2>
-                <h3>让结构化数据易读易传</h3>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <p><strong>JSON = JavaScript Object Notation（对象表示法）</strong></p>
-                    <p class="small-text">计算机世界最流行的数据交换格式</p>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <div style="display: flex; gap: 20px; align-items: center;">
-                        <div style="flex: 1;">
-                            <h4>📋 传统表格</h4>
-                            <div class="example-box small-text">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr><td>姓名</td><td>年龄</td><td>班级</td></tr>
-                                    <tr><td>张三</td><td>16</td><td>高一(3)班</td></tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div style="font-size: 2em; color: var(--primary-color);">→</div>
-                        <div style="flex: 1;">
-                            <h4>💾 JSON 格式</h4>
-                            <div class="json-box">
-<pre style="margin: 0; text-align: left;"><code>{
-  "姓名": "张三",
-  "年龄": 16,
-  "班级": "高一(3)班"
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <p class="highlight">JSON：人能看懂 + 机器能处理 = 完美！</p>
-                </div>
-            </section>
-
-            <!-- 第 3.8 页：REST API 实例 - 计算器 -->
-            <section class="scrollable-slide">
-                <h2>🎯 实时演示：REST API 计算器</h2>
-                <p class="small-text">体验 JSON 请求与响应</p>
-
-                <div class="calc-demo-container">
-                    <!-- 用户看到的界面 -->
-                    <div class="calc-demo-left">
-                        <h4 style="font-size: 1em; margin-bottom: 10px;">👤 你看到的界面</h4>
-                        <div class="calculator-ui">
-                            <div class="calc-inputs">
-                                <input type="number" id="calc-num-a" placeholder="数字" class="calc-input" />
-                                <select id="calc-operation" class="calc-select">
-                                    <option value="add">+</option>
-                                    <option value="subtract">-</option>
-                                    <option value="multiply">×</option>
-                                    <option value="divide">÷</option>
-                                </select>
-                                <input type="number" id="calc-num-b" placeholder="数字" class="calc-input" />
-                            </div>
-                            <button id="calc-btn" class="calc-button">计算</button>
-                            <div id="calc-display" class="calc-display">等待输入...</div>
-                            <div id="calc-result" class="calc-result">?</div>
-                        </div>
-                    </div>
-
-                    <!-- 系统传输的 JSON -->
-                    <div class="calc-demo-right">
-                        <h4 style="font-size: 1em; margin-bottom: 10px;">🤖 系统传输的 JSON</h4>
-                        <div class="json-container">
-                            <p class="json-label">📤 请求</p>
-                            <div class="json-box json-request">
-<pre id="request-json" style="margin: 0; font-size: 0.7em;"><code>{
-  "operation": "add",
-  "a": 125,
-  "b": 75
-}</code></pre>
-                            </div>
-                            <p class="json-label" style="margin-top: 10px;">📥 响应</p>
-                            <div class="json-box json-response">
-<pre id="response-json" style="margin: 0; font-size: 0.7em;"><code>{
-  "result": 200,
-  "success": true
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 20px;">
-                    <p class="highlight" style="font-size: 0.9em; padding: 10px;">REST API = 用 JSON 格式通过 HTTP 通信</p>
-                </div>
-
-                <div class="fragment" style="margin-top: 20px;">
-                    <p style="font-size: 0.85em; color: var(--primary-color); font-style: italic;">
-                        💡 无论是微信、淘宝、还是 ChatGPT，它们背后都在用同样的通信方式——<br/>
-                        只不过数据越来越复杂，从数字变成语言。
-                    </p>
-                </div>
-            </section>
-
-            <!-- 第一部分总结 -->
-            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
-                <h2>📋 第一部分总结</h2>
-                <h3>我们学到了什么？</h3>
-
-                <div class="fragment" style="margin-top: 40px;">
-                    <div class="summary-box">
-                        <h4>✅ 核心概念</h4>
-                        <ul style="text-align: left; font-size: 0.9em; line-height: 1.8;">
-                            <li>系统 = 输入 → 处理 → 输出</li>
-                            <li>数据有两种形态：结构化 vs 非结构化</li>
-                            <li>JSON 是数据交换的通用语言</li>
-                            <li>REST API 让系统之间用 JSON 沟通</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <div class="practice-box">
-                        <h4>🔍 实战练习：查看真实的 API</h4>
-                        <p style="font-size: 0.85em; margin: 15px 0;">打开浏览器开发者工具（F12）→ Network 标签页</p>
-                        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
-                            <div class="practice-item">
-                                <p><strong>B站</strong></p>
-                                <p class="small-text">看视频时的请求</p>
-                            </div>
-                            <div class="practice-item">
-                                <p><strong>淘宝/京东</strong></p>
-                                <p class="small-text">搜索商品时的 JSON</p>
-                            </div>
-                            <div class="practice-item">
-                                <p><strong>微博/抖音</strong></p>
-                                <p class="small-text">刷新动态的数据</p>
-                            </div>
-                        </div>
-                        <p class="small-text" style="margin-top: 20px; color: var(--highlight-color);">💡 你会看到大量的 JSON 数据在传输！</p>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 40px;">
-                    <p style="font-size: 1.2em; color: var(--primary-color);">☕ 休息一下，准备进入第二部分</p>
-                    <p class="small-text">接下来：计算机技术演化 + AI 发展历程</p>
-                </div>
-            </section>
-
-            <!-- ========== 第二部分：技术演化与 AI ========== -->
-
-            <!-- 第二部分开场 -->
-            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
-                <h1>第二部分</h1>
-                <h2 style="color: var(--primary-color);">从计算器到 LLM</h2>
-                <h3>技术演化的故事</h3>
-
-                <div class="fragment" style="margin-top: 60px;">
-                    <p style="font-size: 1.1em; line-height: 1.8;">
-                        我们将看到：<br/>
-                        计算机技术如何一步步演化<br/>
-                        人工智能如何逐渐"聪明"<br/>
-                        <span style="color: var(--highlight-color); font-weight: bold;">最终，LLM 也只是一种特殊的"系统"</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- 第 5.5 页：计算机技术的演化简图 -->
-            <section class="scrollable-slide">
-                <h2>计算机技术的演化简图</h2>
-                <p class="small-text">硬件与基础设施如何发展</p>
-
-                <div class="fragment" style="margin-top: 40px;">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                        <div class="evolution-box" style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px; min-width: 120px;">
-                            <p style="font-size: 0.85em; margin: 0;">📇 打孔卡</p>
-                            <p class="small-text" style="font-size: 0.6em; margin-top: 5px;">1950s</p>
-                        </div>
-                        <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
-                        <div class="evolution-box fragment" style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px; min-width: 120px;">
-                            <p style="font-size: 0.85em; margin: 0;">💻 个人电脑</p>
-                            <p class="small-text" style="font-size: 0.6em; margin-top: 5px;">1980s</p>
-                        </div>
-                        <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
-                        <div class="evolution-box fragment" style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px; min-width: 120px;">
-                            <p style="font-size: 0.85em; margin: 0;">🌐 互联网</p>
-                            <p class="small-text" style="font-size: 0.6em; margin-top: 5px;">1990s</p>
-                        </div>
-                        <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
-                        <div class="evolution-box fragment" style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px; min-width: 120px;">
-                            <p style="font-size: 0.85em; margin: 0;">☁️ 云计算</p>
-                            <p class="small-text" style="font-size: 0.6em; margin-top: 5px;">2000s</p>
-                        </div>
-                        <div style="font-size: 1.5em; color: var(--primary-color);">→</div>
-                        <div class="evolution-box fragment" style="padding: 15px; background: rgba(255,217,61,0.2); border: 2px solid var(--highlight-color); border-radius: 8px; min-width: 140px;">
-                            <p style="font-size: 0.85em; margin: 0; color: var(--highlight-color);">🤖 智能系统网络</p>
-                            <p class="small-text" style="font-size: 0.6em; margin-top: 5px;">2020s</p>
-                            <p class="small-text" style="font-size: 0.55em; margin-top: 3px;">边缘设备 + 模型接口</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 40px;">
-                    <p class="highlight" style="font-size: 0.9em; padding: 10px;">
-                        从孤立的计算机 → 联网的设备 → 会思考的智能网络
-                    </p>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <p style="font-size: 0.9em; color: var(--primary-color);">
-                        💡 现在，计算机技术 + 人工智能 两条路线正在交汇
-                    </p>
-                </div>
-            </section>
-
-            <!-- 第 6 页：人工智能的发展脉络（概览） -->
-            <section class="scrollable-slide">
-                <h2>人工智能的发展脉络</h2>
-                <p class="small-text">从死记硬背到理解语言</p>
-                <div class="ai-evolution" style="margin-top: 20px;">
-                    <div class="fragment evolution-stage">
-                        <h4 style="font-size: 1em;">📋 规则系统（Rule-based）</h4>
-                        <p style="font-size: 0.8em;">依靠人写规则 → 死记硬背的学生</p>
-                    </div>
-                    <div class="fragment evolution-stage">
-                        <h4 style="font-size: 1em;">🤖 机器学习（Machine Learning）</h4>
-                        <p style="font-size: 0.8em;">让机器自己总结规律 → 会举一反三的学生</p>
-                    </div>
-                    <div class="fragment evolution-stage">
-                        <h4 style="font-size: 1em;">🧠 深度学习（Deep Learning）</h4>
-                        <p style="font-size: 0.8em;">模拟神经网络 → 能看懂图片、听懂语音</p>
-                    </div>
-                    <div class="fragment evolution-stage highlight">
-                        <h4 style="font-size: 1em;">💬 大语言模型（LLM）</h4>
-                        <p style="font-size: 0.8em;">理解语义 → 会表达思想的学生</p>
-                    </div>
-                </div>
-                <div class="fragment" style="margin-top: 20px;">
-                    <p class="highlight" style="font-size: 0.9em; padding: 10px;">关键变化：从"计算规则"到"理解意义"</p>
-                </div>
-            </section>
-
-            <!-- 第 6.1 页：规则系统详解 -->
-            <section class="scrollable-slide">
-                <h2>📋 规则系统（Rule-based）</h2>
-                <p class="small-text">1950-1980 年代 · 死记硬背的学生</p>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <div class="ai-detail-box" style="padding: 12px;">
-                        <h4 style="font-size: 0.9em;">核心思想</h4>
-                        <p style="font-size: 0.8em;">程序员手写所有规则，机器严格执行</p>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <h4 style="font-size: 0.9em; color: var(--highlight-color);">实际例子：垃圾邮件过滤</h4>
-                    <div class="example-comparison">
-                        <div class="example-code">
-                            <p class="code-label" style="font-size: 0.65em;">规则代码</p>
-                            <div class="json-box" style="font-size: 0.6em;">
-<pre style="margin: 0;"><code>if 邮件包含("中奖"):
-    标记为垃圾邮件
-if 邮件包含("免费"):
-    标记为垃圾邮件</code></pre>
-                            </div>
-                        </div>
-                        <div class="example-result">
-                            <p style="font-size: 0.8em;"><strong>✅ 优点：</strong></p>
-                            <ul style="font-size: 0.7em; text-align: left; margin: 3px 0;">
-                                <li>逻辑清晰</li>
-                                <li>结果可预测</li>
-                            </ul>
-                            <p style="margin-top: 10px; font-size: 0.8em;"><strong>❌ 缺点：</strong></p>
-                            <ul style="font-size: 0.7em; text-align: left; margin: 3px 0;">
-                                <li>规则写不完</li>
-                                <li>无法适应</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第 6.2 页：机器学习详解 -->
-            <section class="scrollable-slide">
-                <h2>🤖 机器学习（Machine Learning）</h2>
-                <p class="small-text">1990-2010 年代 · 会举一反三的学生</p>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <div class="ai-detail-box" style="padding: 12px;">
-                        <h4 style="font-size: 0.9em;">核心思想</h4>
-                        <p style="font-size: 0.8em;">给机器大量例子，让它自己总结规律</p>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <h4 style="font-size: 0.9em; color: var(--highlight-color);">实际例子：房价预测</h4>
-                    <div class="ml-example">
-                        <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start;">
-                            <div class="ml-training" style="flex: 1; max-width: 450px;">
-                                <p class="code-label" style="font-size: 0.65em;">训练数据</p>
-                                <table style="font-size: 0.6em; margin: 6px auto; width: 100%;">
-                                    <tr style="background: rgba(0,212,255,0.1);">
-                                        <th style="padding: 5px;">面积</th><th style="padding: 5px;">地段</th><th style="padding: 5px;">房龄</th><th style="padding: 5px;">→</th><th style="padding: 5px;">价格</th>
-                                    </tr>
-                                    <tr><td>50㎡</td><td>市中心</td><td>3年</td><td>→</td><td>500万</td></tr>
-                                    <tr><td>100㎡</td><td>市中心</td><td>10年</td><td>→</td><td>800万</td></tr>
-                                    <tr><td>80㎡</td><td>郊区</td><td>5年</td><td>→</td><td>300万</td></tr>
-                                </table>
-                                <p style="font-size: 0.65em; margin-top: 6px;">学到：<span style="color: var(--primary-color);">面积↑ 地段↑ → 价格↑</span></p>
-                            </div>
-                            <div class="ml-prediction fragment" style="flex: 1; max-width: 350px;">
-                                <p class="code-label" style="font-size: 0.65em;">新房预测</p>
-                                <div class="prediction-box" style="padding: 10px;">
-                                    <p style="font-size: 0.75em;">输入：70㎡ + 市中心 + 2年</p>
-                                    <p style="font-size: 0.75em; color: var(--highlight-color);">预测：约 550万</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 12px;">
-                    <p style="font-size: 0.75em;"><strong style="color: var(--primary-color);">✅ 突破：</strong>机器自己学，不需写规则！</p>
-                </div>
-            </section>
-
-            <!-- 第 6.3 页：深度学习详解 -->
-            <section class="scrollable-slide">
-                <h2>🧠 深度学习（Deep Learning）</h2>
-                <p class="small-text">2010+ · 能看懂图片、听懂语音</p>
-
-                <div class="fragment" style="margin-top: 12px;">
-                    <div class="ai-detail-box" style="padding: 10px;">
-                        <h4 style="font-size: 0.85em;">核心思想</h4>
-                        <p style="font-size: 0.75em;">模拟人脑神经网络，层层提取特征</p>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 12px;">
-                    <h4 style="font-size: 0.85em; color: var(--highlight-color);">实际例子：图片识别（识别猫）</h4>
-                    <div style="display: flex; gap: 10px; justify-content: center; align-items: center; margin: 10px auto;">
-                        <div class="dl-layer" style="flex: 1; max-width: 140px;">
-                            <p class="layer-title" style="font-size: 0.6em; margin-bottom: 3px;">输入</p>
-                            <div class="layer-box" style="padding: 6px;">
-                                <p style="font-size: 0.6em;">🖼️ 照片</p>
-                            </div>
-                        </div>
-                        <div class="arrow-down" style="font-size: 1.2em; margin: 0 5px;">→</div>
-                        <div class="dl-layer" style="flex: 1; max-width: 140px;">
-                            <p class="layer-title" style="font-size: 0.6em; margin-bottom: 3px;">边缘</p>
-                            <div class="layer-box" style="padding: 6px;">
-                                <p style="font-size: 0.55em;">线条</p>
-                            </div>
-                        </div>
-                        <div class="arrow-down" style="font-size: 1.2em; margin: 0 5px;">→</div>
-                        <div class="dl-layer" style="flex: 1; max-width: 140px;">
-                            <p class="layer-title" style="font-size: 0.6em; margin-bottom: 3px;">形状</p>
-                            <div class="layer-box" style="padding: 6px;">
-                                <p style="font-size: 0.55em;">耳朵眼睛</p>
-                            </div>
-                        </div>
-                        <div class="arrow-down" style="font-size: 1.2em; margin: 0 5px;">→</div>
-                        <div class="dl-layer" style="flex: 1; max-width: 140px;">
-                            <p class="layer-title" style="font-size: 0.6em; margin-bottom: 3px;">输出</p>
-                            <div class="layer-box" style="background: rgba(255,217,61,0.2); border-color: var(--highlight-color); padding: 6px;">
-                                <p style="font-size: 0.6em; color: var(--highlight-color);">猫！95%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 10px;">
-                    <p style="font-size: 0.7em;"><strong style="color: var(--primary-color);">✅ 突破：</strong>处理图片、声音等非结构化数据！</p>
-                </div>
-            </section>
-
-            <!-- 第 6.4 页：大语言模型详解 -->
-            <section class="scrollable-slide">
-                <h2>💬 大语言模型（LLM）</h2>
-                <p class="small-text">2020+ · 会表达思想的学生</p>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <div class="ai-detail-box" style="padding: 12px;">
-                        <h4 style="font-size: 0.9em;">核心思想</h4>
-                        <p style="font-size: 0.8em;">深度学习 + 海量文字 → 理解和生成人类语言</p>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <h4 style="font-size: 0.9em; color: var(--highlight-color);">实际例子：智能问答</h4>
-                    <div class="llm-example">
-                        <div class="llm-input">
-                            <p class="code-label" style="font-size: 0.65em;">输入</p>
-                            <div class="example-box" style="padding: 10px;">
-                                <p style="font-size: 0.7em;">"用一句话总结辛亥革命的意义"</p>
-                            </div>
-                        </div>
-                        <div class="arrow-down" style="margin: 10px 0; font-size: 0.7em;">↓ LLM 处理</div>
-                        <div class="llm-output">
-                            <p class="code-label" style="font-size: 0.65em;">输出</p>
-                            <div class="example-box" style="background: rgba(255,217,61,0.1); border-color: var(--highlight-color); padding: 10px;">
-                                <p style="font-size: 0.7em;">"推翻封建帝制，建立共和政体"</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 12px;">
-                    <div style="display: flex; gap: 12px; justify-content: center;">
-                        <div class="llm-ability" style="padding: 8px; min-width: 90px;">
-                            <p style="font-size: 0.8em;"><strong>✅ 理解</strong></p>
-                            <p class="small-text" style="font-size: 0.6em;">语义</p>
-                        </div>
-                        <div class="llm-ability" style="padding: 8px; min-width: 90px;">
-                            <p style="font-size: 0.8em;"><strong>✅ 生成</strong></p>
-                            <p class="small-text" style="font-size: 0.6em;">文字</p>
-                        </div>
-                        <div class="llm-ability" style="padding: 8px; min-width: 90px;">
-                            <p style="font-size: 0.8em;"><strong>✅ 推理</strong></p>
-                            <p class="small-text" style="font-size: 0.6em;">思考</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 12px;">
-                    <p style="font-size: 0.75em;"><strong style="color: var(--primary-color);">✅ 突破：</strong>能处理语言这种最复杂的非结构化数据！</p>
-                </div>
-            </section>
-
-            <!-- 第 7 页：LLM 也是系统！ -->
-            <section class="scrollable-slide">
-                <h2>LLM 也是一种系统！</h2>
-                <p class="small-text">同样遵循：输入 → 处理 → 输出</p>
-
-                <div class="fragment" style="margin-top: 25px;">
-                    <div class="comparison-container">
-                        <!-- 计算器系统 -->
-                        <div class="comparison-item">
-                            <h4 style="font-size: 1em; margin-bottom: 12px;">🧮 计算器系统</h4>
-                            <div class="system-flow">
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">输入</p>
-                                    <p class="flow-content" style="font-size: 0.75em;">125 + 75</p>
-                                </div>
-                                <div class="flow-arrow" style="font-size: 1.5em;">→</div>
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">处理</p>
-                                    <p class="flow-content" style="font-size: 0.75em;">数学运算</p>
-                                </div>
-                                <div class="flow-arrow" style="font-size: 1.5em;">→</div>
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">输出</p>
-                                    <p class="flow-content" style="font-size: 0.75em;">200</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- LLM 系统 -->
-                        <div class="comparison-item fragment">
-                            <h4 style="font-size: 1em; margin-bottom: 12px;">🤖 LLM 系统</h4>
-                            <div class="system-flow">
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">输入</p>
-                                    <p class="flow-content" style="font-size: 0.7em;">解释牛顿第一定律</p>
-                                </div>
-                                <div class="flow-arrow" style="font-size: 1.5em;">→</div>
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">处理</p>
-                                    <p class="flow-content" style="font-size: 0.7em;">理解语义<br/>生成回答</p>
-                                </div>
-                                <div class="flow-arrow" style="font-size: 1.5em;">→</div>
-                                <div class="flow-step" style="min-width: 140px; padding: 10px;">
-                                    <p class="flow-label" style="font-size: 0.65em; margin-bottom: 5px;">输出</p>
-                                    <p class="flow-content" style="font-size: 0.7em;">保持静止或匀速运动</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 25px;">
-                    <p class="highlight" style="font-size: 0.85em; padding: 8px;">核心差异：处理的是"语言"而非"数字"</p>
-                </div>
-
-                <div class="fragment" style="margin-top: 15px;">
-                    <p style="font-size: 0.85em;">但本质上，<strong style="color: var(--primary-color);">LLM 仍然是一个系统</strong>！</p>
-                    <p class="small-text">• 有输入（文字）• 有处理（AI 模型）• 有输出（文字）• 可以通过 API 调用</p>
-                </div>
-            </section>
-
-            <!-- 第 7.5 页：LLM 实时演示 -->
-            <section class="scrollable-slide">
-                <h2>🎯 现场演示：体验 LLM</h2>
-                <h3>让我们现场试试 AI 的能力</h3>
-
-                <!-- API Key Setup -->
-                <div class="api-key-section fragment">
-                    <p class="small-text">⚙️ 首次使用需要设置 DeepSeek API Key（<a href="https://platform.deepseek.com/api_keys" target="_blank">获取密钥</a>）</p>
-                    <div class="api-key-input-group">
-                        <input type="password" id="api-key-input" placeholder="输入你的 API Key" />
-                        <button id="set-api-key-btn" class="demo-btn small">设置</button>
-                    </div>
-                    <p id="key-status" class="key-status"></p>
-                </div>
-
-                <!-- Demo Interface -->
-                <div class="demo-container fragment">
-                    <div class="demo-input-section">
-                        <textarea id="user-input" placeholder="输入你的问题，例如：用初三水平解释牛顿第一定律"></textarea>
-                        <button id="demo-btn" class="demo-btn">🚀 提问 AI</button>
-                    </div>
-
-                    <div class="demo-examples" id="demo-examples">
-                        <p class="small-text">💡 快速示例（点击填入）：</p>
-                    </div>
-
-                    <div id="demo-output" class="demo-output">
-                        <p class="placeholder">AI 的回答将在这里显示...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第 8 页：LLM 在生活中的用法 -->
-            <section class="scrollable-slide">
-                <h2>LLM 在生活中的用法</h2>
-                <h3>学习 / 创造 / 生活</h3>
-                <div style="margin-top: 40px;">
-                    <div class="fragment use-case">
-                        <h4>📚 学习助手</h4>
-                        <p>总结课文、出小测、解题思路</p>
-                    </div>
-                    <div class="fragment use-case">
-                        <h4>🎨 创造力工具</h4>
-                        <p>写 rap、写海报文案、写剧本</p>
-                    </div>
-                    <div class="fragment use-case">
-                        <h4>🏠 生活助手</h4>
-                        <p>复习计划、翻译文章、生成清单</p>
-                    </div>
-                </div>
-                <div class="fragment" style="margin-top: 60px;">
-                    <p class="highlight">AI 成为你的"个人助教 + 创作搭档"</p>
-                </div>
-            </section>
-
-            <!-- 第 9 页：LLM = 系统的超级胶水 -->
-            <section class="scrollable-slide">
-                <h2>LLM = 系统的超级胶水</h2>
-                <h3>让不同系统"说同一种语言"</h3>
-                <div class="fragment">
-                    <p>传统系统只懂数字和表格</p>
-                    <p class="highlight">LLM 懂自然语言，成为"翻译层"</p>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>工作原理（语义翻译）：</strong></p>
-                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 0.85em;">
-                            <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; min-width: 150px; text-align: center;">
-                                <p style="margin: 0;">传统系统 A</p>
-                                <p class="small-text" style="margin: 5px 0 0 0; font-size: 0.7em;">结构化数据</p>
-                            </div>
-                            <div style="font-size: 1.5em; color: var(--primary-color);">⇄</div>
-                            <div style="padding: 10px; background: rgba(255,217,61,0.2); border: 2px solid var(--highlight-color); border-radius: 5px; min-width: 120px; text-align: center;">
-                                <p style="margin: 0; color: var(--highlight-color); font-weight: bold;">LLM</p>
-                                <p class="small-text" style="margin: 5px 0 0 0; font-size: 0.7em;">理解自然语言</p>
-                            </div>
-                            <div style="font-size: 1.5em; color: var(--primary-color);">⇄</div>
-                            <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; min-width: 150px; text-align: center;">
-                                <p style="margin: 0;">系统 B</p>
-                                <p class="small-text" style="margin: 5px 0 0 0; font-size: 0.7em;">非结构化数据</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragment" style="margin-top: 30px;">
-                    <p><strong>具体例子：</strong></p>
-                    <div class="example-box small-text">
-                        <p>微信群一句话"明天中午开班会" → LLM → 转成日程 → 自动写进日历</p>
-                    </div>
-                    <div class="example-box small-text">
-                        <p>成绩表 + 作文 → LLM 综合出个性化学习建议</p>
-                    </div>
-                    <div class="example-box small-text">
-                        <p>外卖客服："少辣多饭" → LLM → 转成结构化订单</p>
-                    </div>
-                </div>
-                <div class="fragment">
-                    <p class="highlight">比喻：LLM = 超级 API，让万物互通</p>
-                </div>
-            </section>
-
-            <!-- 第 9.5 页：思考时刻 -->
-            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
-                <h2>💭 思考时刻</h2>
-                <div style="margin-top: 60px;">
-                    <p style="font-size: 1.1em; line-height: 1.8; color: var(--primary-color);">
-                        到这里，我们已经从<strong>系统的概念</strong>，<br/>
-                        一步步走到了<strong>"能理解语言的系统"</strong>。
-                    </p>
-                </div>
-
-                <div class="fragment" style="margin-top: 60px;">
-                    <p style="font-size: 1.2em; line-height: 1.8;">
-                        现在，轮到你们思考：
-                    </p>
-                    <p class="highlight" style="font-size: 1.1em; padding: 20px; margin-top: 20px;">
-                        这样的系统能为<strong>谁</strong>解决<strong>什么</strong>问题？
-                    </p>
-                </div>
-
-                <div class="fragment" style="margin-top: 60px;">
-                    <p class="small-text" style="color: var(--highlight-color);">
-                        ⏸️ 给自己 30 秒，想一个你关心的场景...
-                    </p>
-                </div>
-            </section>
-
-            <!-- 第 10 页：设计你的项目 -->
-            <section class="scrollable-slide">
-                <h2>设计你的项目</h2>
-                <h3>痛点 → LLM → 解决方案</h3>
-                <div class="fragment">
-                    <div class="project-idea">
-                        <p>❌ 作业太多容易忘 → ✅ LLM 作业提醒机器人</p>
-                    </div>
-                    <div class="project-idea">
-                        <p>❌ 笔记枯燥 → ✅ 自动生成抽认卡</p>
-                    </div>
-                    <div class="project-idea">
-                        <p>❌ 社团宣传 → ✅ LLM 生成口号与海报文案</p>
-                    </div>
-                </div>
-                <div class="fragment" style="margin-top: 40px;">
-                    <p class="highlight">重点：你不一定要会编程，只要能定义问题与流程</p>
-                </div>
-                <div class="fragment">
-                    <p><strong>工具示例：</strong></p>
-                    <p>Notion AI / 文心一言 / 通义千问</p>
-                </div>
-            </section>
-
-            <!-- 第 11 页：结尾 -->
-            <section class="scrollable-slide">
-                <h2>从创作者到 AI 创作者</h2>
-                <div class="fragment">
-                    <p>📹 昨天：B站/抖音让每个人成为内容创作者</p>
-                </div>
-                <div class="fragment">
-                    <p>🚀 明天：AI 让每个人成为"智能创作者"</p>
-                </div>
-                <div class="fragment" style="margin-top: 60px;">
-                    <p class="highlight">LLM 不是来取代你，而是放大你的创造力</p>
-                </div>
-
-                <div class="fragment" style="margin-top: 50px; padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
-                    <p style="font-size: 0.95em; line-height: 1.8; color: var(--primary-color);">
-                        🔄 <strong>回到开头</strong>
-                    </p>
-                    <p style="font-size: 0.9em; line-height: 1.8; margin-top: 10px;">
-                        一开始我们说，LLM 是<strong>计算机技术</strong>和<strong>人工智能</strong>两条路线的交汇。
-                    </p>
-                    <p style="font-size: 0.95em; line-height: 1.8; margin-top: 15px; color: var(--highlight-color);">
-                        其实更重要的，是它也能成为<br/>
-                        <strong>"你们学习和创造力的交汇点"</strong>。
-                    </p>
-                </div>
-
-                <div class="fragment" style="margin-top: 50px;">
-                    <h3>💭 最后一个问题</h3>
-                    <p class="interaction">"如果让你今天用 LLM 做一个项目，它能解决你生活中的什么问题？"</p>
-                </div>
-            </section>
-
+            <a href="class2.html" class="card">
+                <h2>第二课</h2>
+                <p><strong>深入理解 AI 大模型</strong></p>
+                <p>探索大语言模型的工作原理、应用场景和未来发展</p>
+                <div class="meta">🤖 大模型技术 • 🚀 实践应用</div>
+            </a>
         </div>
     </div>
-
-    <script src="node_modules/reveal.js/dist/reveal.js"></script>
-    <script type="module">
-        import { initDemo } from './js/deepseek-demo.js';
-        import { initCalculatorDemo } from './js/calculator-demo.js';
-
-        Reveal.initialize({
-            hash: true,
-            center: true,
-            transition: 'slide',
-            slideNumber: true,
-            controls: true,
-            progress: true,
-            keyboard: true,
-            overview: true,
-            touch: true,
-            loop: false,
-            rtl: false,
-            navigationMode: 'default',
-            shuffle: false,
-            fragments: true,
-            fragmentInURL: true,
-            embedded: false,
-            help: true,
-            pause: true,
-            showNotes: false,
-            autoPlayMedia: null,
-            preloadIframes: null,
-            autoAnimate: true,
-            autoAnimateMatcher: null,
-            autoAnimateDuration: 1.0,
-            autoAnimateUnmatched: true,
-            width: 1280,
-            height: 720,
-            margin: 0.04,
-            minScale: 0.2,
-            maxScale: 2.0
-        });
-
-        // Initialize demos after Reveal.js is ready
-        Reveal.on('ready', () => {
-            initDemo();
-            initCalculatorDemo();
-        });
-    </script>
 </body>
 </html>

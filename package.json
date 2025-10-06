@@ -8,10 +8,10 @@
     "dev": "http-server -p 8000 -c-1 -o",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["ai", "education", "presentation", "reveal.js"],
+  "author": "zjsnxc@gmail.com",
+  "license": "CC-BY-NC-SA-4.0",
+  "description": "AI education course presentation for high school students",
   "devDependencies": {
     "http-server": "^14.1.1"
   },

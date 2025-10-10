@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 3: Expert Mirroring - 重新发现专家智慧的第一性原理</title>
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: 标题 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1>Expert Mirroring</h1>
+                <h2 style="color: var(--highlight-color);">重新发现专家智慧的第一性原理</h2>
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.3em; line-height: 1.8; color: var(--primary-color);">
+                        🎯 "先理解人类怎么做，<br/>再教模型怎么做"
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 1em; line-height: 1.8;">
+                        💡 LLM 时代的核心分歧<br/>
+                        两种路线：技术出发 vs 专家镜像
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="padding: 15px; font-size: 0.95em;">
+                        🎯 请大家思考：AI 真正在解决谁的问题？
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 2: Warm-up Question -->
+            <section class="scrollable-slide">
+                <h2>🤔 Warm-up Question</h2>
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.3em; line-height: 1.8; color: var(--primary-color);">
+                        你上次做 AI 项目，<br/>
+                        是先看问题还是先看功能？
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 50px;">
+                    <p class="interaction" style="font-size: 1em;">💭 讨论 1 分钟</p>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto;">
+                        <div style="padding: 20px; background: rgba(255,107,107,0.1); border: 2px solid rgba(255,107,107,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.85em; margin: 0;">⚡ 功能 → 问题</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em;">"GPT 能干啥？"</p>
+                            <p class="small-text" style="margin-top: 5px; font-size: 0.7em; color: #ff6b6b;">多数人的第一反应</p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.85em; margin: 0;">🎯 问题 → 功能</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.7em;">"问题在哪？"</p>
+                            <p class="small-text" style="margin-top: 5px; font-size: 0.7em; color: var(--primary-color);">真正有效的路径</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: 两条路径 -->
+            <section class="scrollable-slide">
+                <h2>🔀 两条路径</h2>
+                <h3>主流路径 vs Expert Mirroring</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <table style="width: 90%; margin: 0 auto; font-size: 0.85em; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: rgba(0,212,255,0.2);">
+                                <th style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">路径</th>
+                                <th style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">出发点</th>
+                                <th style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">典型结果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fragment">
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">⚡ 技术出发</td>
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">"有 LLM 能干嘛？"</td>
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2); color: #ff6b6b;">聊天机器人、AI 伴侣</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">🪞 Expert Mirroring</td>
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2);">"专家怎么做？"</td>
+                                <td style="padding: 15px; border: 1px solid rgba(255,255,255,0.2); color: var(--primary-color);">可复用、可信的解决方案</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Slide 4: 比喻：电的时代 -->
+            <section class="scrollable-slide">
+                <h2>💡 比喻：电的时代</h2>
+                <h3>"拿到电，到处找能电的东西"</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="text-align: center; font-size: 3em; margin: 30px 0;">
+                        ⚡🔌🤔
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; line-height: 1.8;">
+                        说明技术冲动的荒谬：<br/>
+                        早期电气时代的实验 → 当今 LLM 乱用
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p class="highlight" style="padding: 15px; font-size: 0.95em;">
+                        创新 ≠ 乱试；要先有问题定义
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 5: 为什么要 Mirror -->
+            <section class="scrollable-slide">
+                <h2>🪞 为什么要 Mirror</h2>
+                <h3>已知领域 = 已有人类智慧</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">⚕️</div>
+                            <p style="font-size: 0.85em; margin: 0;">医学</p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">⚖️</div>
+                            <p style="font-size: 0.85em; margin: 0;">法律</p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">📚</div>
+                            <p style="font-size: 0.85em; margin: 0;">教育</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div class="summary-box" style="padding: 20px; background: rgba(0,212,255,0.1); border-radius: 10px;">
+                        <ul style="text-align: left; font-size: 0.9em; line-height: 1.8;">
+                            <li>✅ 有明确目标</li>
+                            <li>✅ 有成熟流程</li>
+                            <li>✅ 有安全边界</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; color: var(--highlight-color);">
+                        💡 在这些领域，创新前先学习专家
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 6: 案例引入 -->
+            <section class="scrollable-slide">
+                <h2>📽️ 案例引入</h2>
+                <h3>AI 帮盲人"看"电影？</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div class="example-box" style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px;">
+                        <p style="font-size: 0.9em; line-height: 1.8; margin-bottom: 15px;">
+                            <strong>学生团队想法：</strong><br/>
+                            用 GPT 描述画面
+                        </p>
+                        <p style="font-size: 0.85em; color: var(--primary-color);">
+                            ✅ 初衷好：公平体验
+                        </p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="example-box" style="padding: 20px; background: rgba(255,107,107,0.1); border-radius: 10px;">
+                        <p style="font-size: 0.9em; line-height: 1.8; color: #ff6b6b;">
+                            ❌ 问题：忽略了已有行业<br/>
+                            <strong>音频描述 (Audio Description)</strong>
+                        </p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 1.1em; color: var(--highlight-color);">
+                        💭 "如果行业已经做了 40 年，我们该怎么做？"
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 7: 行业规则的智慧 -->
+            <section class="scrollable-slide">
+                <h2>📋 行业规则的智慧</h2>
+                <h3>为什么这些规则存在？</h3>
+                <div style="margin-top: 40px;">
+                    <div class="fragment" style="margin-bottom: 25px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin: 0;">
+                            <strong>规则 1:</strong> 不能描述所有画面
+                        </p>
+                        <p class="small-text" style="margin-top: 10px; font-size: 0.75em; color: var(--primary-color);">
+                            → 认知过载
+                        </p>
+                    </div>
+                    <div class="fragment" style="margin-bottom: 25px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin: 0;">
+                            <strong>规则 2:</strong> 对话间隙插入
+                        </p>
+                        <p class="small-text" style="margin-top: 10px; font-size: 0.75em; color: var(--primary-color);">
+                            → 不盖演员
+                        </p>
+                    </div>
+                    <div class="fragment" style="margin-bottom: 25px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin: 0;">
+                            <strong>规则 3:</strong> 悬疑片模糊细节
+                        </p>
+                        <p class="small-text" style="margin-top: 10px; font-size: 0.75em; color: var(--primary-color);">
+                            → 保留节奏
+                        </p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p class="highlight" style="padding: 15px; font-size: 0.9em;">
+                        这是"血泪经验"，不是落后标准
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 8: 隐性知识：停顿的艺术 -->
+            <section class="scrollable-slide">
+                <h2>⏸️ 隐性知识：停顿的艺术</h2>
+                <h3>有时，智慧在"什么都不说"里</h3>
+                <div class="fragment" style="margin-top: 50px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4em; margin: 30px 0;">⏸️</div>
+                        <p style="font-size: 1.1em; line-height: 1.8;">
+                            恐怖片停顿 1–2 秒<br/>
+                            <span style="color: var(--primary-color);">→ 情感铺垫</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 0.9em; line-height: 1.8;">
+                        算法无法"发明"这种停顿<br/>
+                        来自人类心理节奏感
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 9: 方法论四步法 -->
+            <section class="scrollable-slide">
+                <h2>🔧 方法论四步法</h2>
+                <h3>如何让模型镜像专家</h3>
+                <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div class="fragment" style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);">1️⃣</div>
+                        <p style="font-size: 0.85em; margin: 0;">还原人类流程</p>
+                    </div>
+                    <div class="fragment" style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);">2️⃣</div>
+                        <p style="font-size: 0.85em; margin: 0;">抽象语言模式</p>
+                    </div>
+                    <div class="fragment" style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);">3️⃣</div>
+                        <p style="font-size: 0.85em; margin: 0;">转化为提示与结构</p>
+                    </div>
+                    <div class="fragment" style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);">4️⃣</div>
+                        <p style="font-size: 0.85em; margin: 0;">用人类标准评测</p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 0.9em; color: var(--highlight-color);">
+                        💡 例如：医生诊断、教师讲课
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 10: 适用与边界 -->
+            <section class="scrollable-slide">
+                <h2>⚖️ 适用与边界</h2>
+                <h3>什么时候 Mirror，什么时候 Explore？</h3>
+                <div style="margin-top: 50px; display: flex; align-items: center; justify-content: center; gap: 40px;">
+                    <div class="fragment" style="flex: 1; padding: 25px; background: rgba(0,212,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px; color: var(--primary-color);">🪞 Mirror</h4>
+                        <ul style="text-align: left; font-size: 0.85em; line-height: 1.8;">
+                            <li>医疗</li>
+                            <li>法律</li>
+                            <li>教育</li>
+                            <li>服务</li>
+                        </ul>
+                    </div>
+                    <div style="font-size: 3em; color: var(--highlight-color);">⚖️</div>
+                    <div class="fragment" style="flex: 1; padding: 25px; background: rgba(255,217,61,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px; color: var(--highlight-color);">🔬 Explore</h4>
+                        <ul style="text-align: left; font-size: 0.85em; line-height: 1.8;">
+                            <li>科学发现</li>
+                            <li>艺术创作</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 50px;">
+                    <p class="interaction" style="font-size: 1em;">
+                        💭 讨论：你们的项目属于哪一类？
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 11: 历史的回声 -->
+            <section class="scrollable-slide">
+                <h2>🔄 历史的回声</h2>
+                <h3>技术革命都犯过的错</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 30px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px; min-width: 200px;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px; color: #aaa;">1990s</p>
+                            <p style="font-size: 0.9em; margin: 0;">🌐 互联网</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.75em;">信息民主化 ≠ 去专家</p>
+                        </div>
+                        <div style="font-size: 2em; color: var(--primary-color);">→</div>
+                        <div style="padding: 20px; background: rgba(255,217,61,0.1); border-radius: 10px; min-width: 200px;">
+                            <p style="font-size: 0.8em; margin-bottom: 10px; color: #aaa;">2020s</p>
+                            <p style="font-size: 0.9em; margin: 0;">🤖 LLM</p>
+                            <p class="small-text" style="margin-top: 10px; font-size: 0.75em;">智能民主化 ≠ 去专家</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="font-size: 1.1em; color: var(--highlight-color);">
+                        💭 提问：民主化的真正含义是什么？
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 12: 创新再定义 -->
+            <section class="scrollable-slide">
+                <h2>🚀 创新再定义</h2>
+                <h3>LLM 时代的创新 = 规模化专家直觉</h3>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="display: grid; gap: 20px; max-width: 800px; margin: 0 auto;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                            <p style="font-size: 0.9em; margin: 0;">
+                                村医 <span style="color: var(--primary-color); font-size: 1.5em;">→</span> 主任医生思维
+                            </p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                            <p style="font-size: 0.9em; margin: 0;">
+                                新教师 <span style="color: var(--primary-color); font-size: 1.5em;">→</span> 特级教师节奏
+                            </p>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                            <p style="font-size: 0.9em; margin: 0;">
+                                每部电影 <span style="color: var(--primary-color); font-size: 1.5em;">→</span> 专业级解说
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 50px;">
+                    <p class="highlight" style="padding: 20px; font-size: 1em;">
+                        创新 = 传播智慧，而非推翻智慧
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 13: 课堂思考 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>💭 课堂思考</h2>
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.2em; line-height: 1.8; color: white;">
+                        你能想到哪些领域<br/>
+                        可以用 Expert Mirroring？
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 50px;">
+                    <div class="practice-box" style="padding: 25px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px;">💡 小组讨论 2 分钟</h4>
+                        <p style="font-size: 0.9em; line-height: 1.8;">
+                            医疗 / 心理 / 教育 / 客户支持<br/>
+                            谁的智慧值得被镜像？
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14: 结尾金句 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+                <h2>✨ 结尾金句</h2>
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.3em; line-height: 2; color: var(--primary-color);">
+                        "在探索未知时，让 LLM 自由飞翔；<br/>
+                        在解决已知问题时，让它成为专家的镜子。"
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.2em; line-height: 1.8; color: var(--highlight-color);">
+                        "真正的智能，<br/>
+                        是让每个人都能像专家一样思考。"
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="text-align: center; font-size: 4em; margin: 20px 0;">
+                        🪞👤🤖
+                    </div>
+                    <p class="small-text">镜子中映出"Human + AI" 的剪影</p>
+                </div>
+            </section>
+
+            <!-- Navigation Page -->
+            <section class="scrollable-slide">
+                <h2>📚 课程导航</h2>
+                <div style="margin-top: 60px;">
+                    <div style="margin-bottom: 30px;">
+                        <a href="index.html" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2em; transition: transform 0.3s;">
+                            🏠 返回主页
+                        </a>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <a href="class2.html" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2em; transition: transform 0.3s;">
+                            ◀️ 上一课：如何与 LLM 对话
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="node_modules/reveal.js/dist/reveal.js"></script>
+    <script type="module">
+        Reveal.initialize({
+            hash: true,
+            center: true,
+            transition: 'slide',
+            slideNumber: true,
+            controls: true,
+            progress: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            navigationMode: 'default',
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: true,
+            embedded: false,
+            help: true,
+            pause: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoAnimate: true,
+            autoAnimateMatcher: null,
+            autoAnimateDuration: 1.0,
+            autoAnimateUnmatched: true,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>

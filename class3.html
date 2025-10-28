@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 3: Dify 工作流实战</title>
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- 开场页 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1>Class 3</h1>
+                <h2 style="color: var(--highlight-color);">Dify 工作流实战</h2>
+                <h3>从零搭建智能助手</h3>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        前两节课：理解了 AI 和如何对话<br/>
+                        间章：看到了 LLM 的各种能力<br/>
+                        今天：<strong style="color: var(--primary-color);">动手组合这些能力</strong>
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <p class="highlight" style="padding: 15px;">
+                        🎯 目标：用 Dify 搭建一个真正能用的 AI 应用
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 1. 复习与准备 ========== -->
+
+            <!-- 1.1 复习：我们学了什么 -->
+            <section class="scrollable-slide">
+                <h2>🔄 快速回顾</h2>
+                <p class="small-text">我们已经掌握的知识</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px;">Class 1</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>系统思维</li>
+                                <li>API 概念</li>
+                                <li>LLM 基础</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px;">Class 2</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>Prompt 工程</li>
+                                <li>结构化输出</li>
+                                <li>JSON Schema</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px;">间章</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>多模态能力</li>
+                                <li>能力组合</li>
+                                <li>编排必要性</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.9em; padding: 12px;">
+                        💡 现在我们有了"理论"和"能力认知"，该动手实践了！
+                    </p>
+                </div>
+            </section>
+
+            <!-- 1.2 今天的目标 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+                <h2>🎯 今天要做什么？</h2>
+
+                <div style="margin-top: 50px;">
+                    <div class="fragment" style="background: rgba(0,212,255,0.1); padding: 30px; border-radius: 15px; border: 2px solid rgba(0,212,255,0.3); margin-bottom: 30px;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 20px; color: var(--primary-color);">项目：学习资料助手</h3>
+                        <div style="text-align: left; font-size: 0.85em; line-height: 2;">
+                            <p>📄 <strong>输入</strong>：一份 PDF 学习资料</p>
+                            <p style="margin-left: 40px;">↓</p>
+                            <p>🤖 <strong>自动处理</strong>：提取 → 总结 → 生成</p>
+                            <p style="margin-left: 40px;">↓</p>
+                            <p>✅ <strong>输出</strong>：知识点总结 + 思维导图 + 语音讲解</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 0.95em; line-height: 1.8;">
+                        <strong>学习重点：</strong><br/>
+                        ✅ Dify 界面和基本操作<br/>
+                        ✅ 节点的配置和连接<br/>
+                        ✅ 数据在工作流中的流动<br/>
+                        ✅ 调试和优化技巧
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 2. Dify 平台入门 ========== -->
+
+            <!-- 2.1 什么是 Dify -->
+            <section class="scrollable-slide">
+                <h2>🔧 什么是 Dify？</h2>
+                <p class="small-text">你的 AI 应用搭建平台</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: flex; align-items: center; gap: 20px; justify-content: center; margin-bottom: 30px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.5em; color: white; font-weight: bold;">
+                            D
+                        </div>
+                        <div style="text-align: left;">
+                            <h3 style="margin: 0; font-size: 1.3em; color: var(--primary-color);">Dify.ai</h3>
+                            <p style="margin: 5px 0 0 0; font-size: 0.8em; color: #aaa;">Open-source LLMOps Platform</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 25px;">
+                        <h4 style="font-size: 1em; margin-bottom: 15px;">核心定位</h4>
+                        <p style="font-size: 0.9em; line-height: 1.8;">
+                            Dify 是一个<strong>可视化的 AI 应用开发平台</strong>，<br/>
+                            让你无需编程就能搭建复杂的 AI 工作流
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin: 0;">🎨 <strong>拖拽式设计</strong></p>
+                            <p style="font-size: 0.7em; margin-top: 8px; color: #aaa;">像搭积木一样简单</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin: 0;">🔗 <strong>多模型支持</strong></p>
+                            <p style="font-size: 0.7em; margin-top: 8px; color: #aaa;">GPT、Claude、国产大模型</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin: 0;">📚 <strong>知识库集成</strong></p>
+                            <p style="font-size: 0.7em; margin-top: 8px; color: #aaa;">上传文档，自动检索</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin: 0;">⚡ <strong>一键部署</strong></p>
+                            <p style="font-size: 0.7em; margin-top: 8px; color: #aaa;">快速发布成可用应用</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2.2 Dify 界面导览 -->
+            <section class="scrollable-slide">
+                <h2>🗺️ Dify 界面导览</h2>
+                <p class="small-text">认识主要功能区</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 25px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <div style="display: grid; gap: 20px;">
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>1️⃣ 左侧导航栏</strong></p>
+                                <p style="font-size: 0.75em; color: #aaa;">
+                                    • 工作室（Studio）：创建应用<br/>
+                                    • 知识库（Knowledge）：管理文档<br/>
+                                    • 工具（Tools）：集成外部服务
+                                </p>
+                            </div>
+
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>2️⃣ 中间画布区</strong></p>
+                                <p style="font-size: 0.75em; color: #aaa;">
+                                    • 拖拽节点到这里<br/>
+                                    • 连接节点构建工作流<br/>
+                                    • 可视化数据流动
+                                </p>
+                            </div>
+
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>3️⃣ 右侧配置区</strong></p>
+                                <p style="font-size: 0.75em; color: #aaa;">
+                                    • 节点详细配置<br/>
+                                    • 参数设置<br/>
+                                    • 测试运行
+                                </p>
+                            </div>
+
+                            <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>4️⃣ 顶部工具栏</strong></p>
+                                <p style="font-size: 0.75em; color: #aaa;">
+                                    • 保存、运行、发布<br/>
+                                    • 历史版本管理
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; color: var(--highlight-color);">
+                        💡 待会我们会逐步演示每个区域的用法
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2.3 核心概念：节点 -->
+            <section class="scrollable-slide">
+                <h2>🧩 核心概念：节点（Node）</h2>
+                <p class="small-text">工作流的基本单元</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 0.95em;">什么是节点？</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            <strong>节点</strong> = 一个独立的处理单元<br/>
+                            每个节点完成一个特定的任务
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>常用节点类型：</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(102,126,234,0.1); border: 2px solid rgba(102,126,234,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📥 Start 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">接收输入数据</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🤖 LLM 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">调用大语言模型</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📚 Knowledge 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">检索知识库</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🔀 IF/ELSE 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">条件分支</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🔧 Tool 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">调用外部工具</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(46,213,115,0.1); border: 2px solid rgba(46,213,115,0.3); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📤 End 节点</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">返回最终结果</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.85em; padding: 10px;">
+                        💡 节点就像乐高积木，组合起来就是完整的系统
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2.4 核心概念：连接与变量 -->
+            <section class="scrollable-slide">
+                <h2>🔗 连接与变量</h2>
+                <p class="small-text">让数据在节点间流动</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <div>
+                            <h3 style="font-size: 0.95em; margin-bottom: 15px; color: var(--primary-color);">🔗 连接（Connection）</h3>
+                            <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                                <p style="font-size: 0.8em; line-height: 1.8; text-align: left;">
+                                    • 用<strong>箭头</strong>连接节点<br/>
+                                    • 箭头方向 = 数据流向<br/>
+                                    • 确定执行顺序
+                                </p>
+                                <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; font-size: 0.7em;">
+                                    <p style="margin: 0;">节点 A → 节点 B → 节点 C</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 style="font-size: 0.95em; margin-bottom: 15px; color: var(--primary-color);">📦 变量（Variable）</h3>
+                            <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                                <p style="font-size: 0.8em; line-height: 1.8; text-align: left;">
+                                    • 存储和传递<strong>数据</strong><br/>
+                                    • 格式：<code style="color: var(--primary-color);">{{变量名}}</code><br/>
+                                    • 可以被下游节点使用
+                                </p>
+                                <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; font-size: 0.7em;">
+                                    <p style="margin: 0;">例如：<code style="color: var(--primary-color);">{{start.user_input}}</code></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(255,217,61,0.1); padding: 20px; border-radius: 10px; border: 2px solid var(--highlight-color);">
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            <strong>关键理解：</strong><br/>
+                            • <strong>连接</strong>决定"先做什么、后做什么"<br/>
+                            • <strong>变量</strong>决定"用什么数据"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== 3. 第一个工作流 ========== -->
+
+            <!-- 3.1 Hello World 工作流 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>👶 第一个工作流：Hello Dify</h2>
+                <p class="small-text">最简单的三节点结构</p>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 10px;">
+                        <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>目标：</strong>输入一句话，LLM 改写成礼貌版本</p>
+                        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; font-size: 0.8em;">
+                            <div style="padding: 15px 30px; background: rgba(102,126,234,0.3); border: 2px solid rgba(102,126,234,0.6); border-radius: 8px; width: 250px;">
+                                <p style="margin: 0;"><strong>📥 Start</strong></p>
+                                <p style="font-size: 0.75em; margin-top: 5px; color: rgba(255,255,255,0.8);">接收用户输入</p>
+                            </div>
+                            <div style="font-size: 2em; color: white;">↓</div>
+                            <div style="padding: 15px 30px; background: rgba(0,212,255,0.3); border: 2px solid rgba(0,212,255,0.6); border-radius: 8px; width: 250px;">
+                                <p style="margin: 0;"><strong>🤖 LLM</strong></p>
+                                <p style="font-size: 0.75em; margin-top: 5px; color: rgba(255,255,255,0.8);">改写成礼貌版本</p>
+                            </div>
+                            <div style="font-size: 2em; color: white;">↓</div>
+                            <div style="padding: 15px 30px; background: rgba(46,213,115,0.3); border: 2px solid rgba(46,213,115,0.6); border-radius: 8px; width: 250px;">
+                                <p style="margin: 0;"><strong>📤 End</strong></p>
+                                <p style="font-size: 0.75em; margin-top: 5px; color: rgba(255,255,255,0.8);">返回结果</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.85em;">
+                        💡 待会老师会现场演示创建过程
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3.2 创建步骤 -->
+            <section class="scrollable-slide">
+                <h2>🛠️ 创建步骤</h2>
+                <p class="small-text">跟着老师一步步操作</p>
+
+                <div style="margin-top: 25px;">
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 1: 创建应用</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>打开 Dify → 点击"创建应用"</li>
+                            <li>选择 <strong>"工作流（Workflow）"</strong></li>
+                            <li>命名：例如"礼貌助手"</li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 2: 配置 Start 节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>Start 节点自动创建</li>
+                            <li>点击 Start → 添加输入变量</li>
+                            <li>变量名：<code>user_text</code></li>
+                            <li>类型：文本（Text）</li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 3: 添加 LLM 节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>从左侧拖入 <strong>"LLM"</strong> 节点</li>
+                            <li>选择模型（如 GPT-3.5、DeepSeek 等）</li>
+                            <li>编写 Prompt（见下页）</li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 4: 配置 End 节点</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>添加 <strong>"End"</strong> 节点</li>
+                            <li>选择输出变量：<code>{{llm.text}}</code></li>
+                            <li>连接所有节点</li>
+                        </ul>
+                    </div>
+
+                    <div class="fragment" style="margin-bottom: 20px; padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                        <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>Step 5: 测试运行</strong></p>
+                        <ul style="font-size: 0.75em; line-height: 1.8; margin-left: 20px;">
+                            <li>点击右上角 <strong>"运行"</strong></li>
+                            <li>输入测试文字</li>
+                            <li>查看输出结果</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3.3 Prompt 示例 -->
+            <section class="scrollable-slide">
+                <h2>📋 LLM 节点的 Prompt</h2>
+                <p class="small-text">写在 LLM 配置中</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <div class="json-box" style="padding: 15px; font-size: 0.7em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一个礼貌沟通助手。
+
+请把用户输入的话改写成更加礼貌、正式的表达。
+
+保持原意不变，只优化语气和用词。
+
+用户输入：
+{{start.user_text}}
+
+请直接输出改写后的文字，不要解释。</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>测试示例：</strong></p>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.75em; margin-bottom: 8px;">📥 输入：</p>
+                            <div class="example-box" style="padding: 10px; font-size: 0.7em;">
+                                <p style="margin: 0;">"快点给我回复"</p>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.2em;">→</div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.75em; margin-bottom: 8px;">📤 输出：</p>
+                            <div class="example-box" style="padding: 10px; font-size: 0.7em; background: rgba(0,212,255,0.1);">
+                                <p style="margin: 0;">"您好，请问您方便尽快回复我吗？谢谢！"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 注意：使用 <code style="color: var(--primary-color);">{{start.user_text}}</code> 引用输入变量
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3.4 实践环节 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>👥 动手时间：创建你的第一个工作流</h2>
+                <p class="small-text">5-10 分钟</p>
+
+                <div style="margin-top: 40px;">
+                    <div class="practice-box" style="padding: 25px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 20px;">🎯 任务</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8; margin-bottom: 20px;">
+                            跟着刚才的步骤，创建"礼貌助手"工作流
+                        </p>
+                        <p style="font-size: 0.8em; line-height: 2; text-align: left;">
+                            1. 创建新的 Workflow 应用<br/>
+                            2. 配置 Start 节点（添加输入变量）<br/>
+                            3. 添加并配置 LLM 节点<br/>
+                            4. 添加 End 节点并连接<br/>
+                            5. 测试运行
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 遇到问题举手示意，老师会过来帮忙
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 4. 搭建学习助手 ========== -->
+
+            <!-- 4.1 项目回顾 -->
+            <section class="scrollable-slide">
+                <h2>📚 项目：学习资料助手</h2>
+                <p class="small-text">现在开始搭建真正有用的应用</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(0,212,255,0.1); padding: 25px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.3);">
+                        <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>需求分析：</strong></p>
+                        <div style="text-align: left; font-size: 0.8em; line-height: 2;">
+                            <p>📄 <strong>输入</strong>：学习资料文本（可以是 PDF 提取的文字）</p>
+                            <p style="margin-top: 10px;"><strong>处理步骤：</strong></p>
+                            <p style="margin-left: 30px;">① 提取关键知识点</p>
+                            <p style="margin-left: 30px;">② 生成结构化总结</p>
+                            <p style="margin-left: 30px;">③ 创建学习建议</p>
+                            <p style="margin-top: 10px;">✅ <strong>输出</strong>：完整的学习笔记</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 我们会一步步添加功能，先从简单版本开始
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.2 工作流设计 -->
+            <section class="scrollable-slide">
+                <h2>🎨 工作流设计</h2>
+                <p class="small-text">规划节点和流程</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 25px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; font-size: 0.75em;">
+                            <div style="padding: 12px 25px; background: rgba(102,126,234,0.2); border: 2px solid rgba(102,126,234,0.5); border-radius: 8px; width: 280px;">
+                                <p style="margin: 0;"><strong>📥 Start</strong> - 接收学习资料文本</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">↓</div>
+                            <div style="padding: 12px 25px; background: rgba(0,212,255,0.2); border: 2px solid rgba(0,212,255,0.5); border-radius: 8px; width: 280px;">
+                                <p style="margin: 0;"><strong>🤖 LLM 1</strong> - 提取关键知识点</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">↓</div>
+                            <div style="padding: 12px 25px; background: rgba(0,212,255,0.2); border: 2px solid rgba(0,212,255,0.5); border-radius: 8px; width: 280px;">
+                                <p style="margin: 0;"><strong>🤖 LLM 2</strong> - 生成结构化总结</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">↓</div>
+                            <div style="padding: 12px 25px; background: rgba(0,212,255,0.2); border: 2px solid rgba(0,212,255,0.5); border-radius: 8px; width: 280px;">
+                                <p style="margin: 0;"><strong>🤖 LLM 3</strong> - 生成学习建议</p>
+                            </div>
+                            <div style="font-size: 1.5em; color: var(--primary-color);">↓</div>
+                            <div style="padding: 12px 25px; background: rgba(46,213,115,0.2); border: 2px solid rgba(46,213,115,0.5); border-radius: 8px; width: 280px;">
+                                <p style="margin: 0;"><strong>📤 End</strong> - 返回完整笔记</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 三个 LLM 节点，每个完成一个特定任务
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.3 LLM 1: 提取知识点 -->
+            <section class="scrollable-slide">
+                <h2>🔧 LLM 1 配置</h2>
+                <p class="small-text">提取关键知识点</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>节点名称：</strong>提取知识点</p>
+                        <div class="json-box" style="padding: 15px; font-size: 0.65em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一个学习助手，擅长从学习资料中提取关键知识点。
+
+请从以下学习资料中提取 5-8 个最重要的知识点。
+
+每个知识点用一句话概括，保持简洁。
+
+学习资料：
+{{start.content}}
+
+请以 JSON 格式输出，格式如下：
+{
+  "key_points": [
+    "知识点1",
+    "知识点2",
+    ...
+  ]
+}
+
+只输出 JSON，不要其他内容。</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <p style="font-size: 0.75em; color: #aaa;">
+                        💡 输出模式建议设置为 <strong>JSON</strong>，确保格式稳定
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.4 LLM 2: 生成总结 -->
+            <section class="scrollable-slide">
+                <h2>🔧 LLM 2 配置</h2>
+                <p class="small-text">生成结构化总结</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>节点名称：</strong>生成总结</p>
+                        <div class="json-box" style="padding: 15px; font-size: 0.65em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一个学习助手。
+
+基于以下提取的知识点，生成一份结构化的学习总结。
+
+知识点：
+{{llm1.text}}
+
+要求：
+1. 按照逻辑顺序重新组织知识点
+2. 补充必要的解释和联系
+3. 使用 Markdown 格式
+4. 包含标题、小节、列表
+
+请生成结构清晰的学习总结。</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <p style="font-size: 0.75em; color: #aaa;">
+                        💡 注意：这里使用 <code style="color: var(--primary-color);">{{llm1.text}}</code> 引用上一个节点的输出
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.5 LLM 3: 学习建议 -->
+            <section class="scrollable-slide">
+                <h2>🔧 LLM 3 配置</h2>
+                <p class="small-text">生成个性化学习建议</p>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <p style="font-size: 0.8em; margin-bottom: 10px;"><strong>节点名称：</strong>学习建议</p>
+                        <div class="json-box" style="padding: 15px; font-size: 0.65em;">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>你是一个学习规划专家。
+
+基于以下学习总结，给出 3-5 条实用的学习建议。
+
+学习总结：
+{{llm2.text}}
+
+要求：
+1. 建议具体可行
+2. 包括学习方法、复习建议、延伸学习方向
+3. 简洁有力，每条不超过 50 字
+4. 用列表格式输出
+
+请生成学习建议。</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 20px;">
+                    <p style="font-size: 0.75em; color: #aaa;">
+                        💡 最后一个 LLM 节点，使用前面的总结作为输入
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.6 配置 End 节点 -->
+            <section class="scrollable-slide">
+                <h2>📤 End 节点配置</h2>
+                <p class="small-text">组合输出完整笔记</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(0,212,255,0.2);">
+                        <p style="font-size: 0.85em; margin-bottom: 15px;"><strong>End 节点需要组合三个 LLM 的输出：</strong></p>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <p style="font-size: 0.75em; margin-bottom: 10px;">输出变量配置：</p>
+                            <div class="json-box" style="padding: 12px; font-size: 0.65em;">
+<pre style="margin: 0; text-align: left;"><code># 学习笔记
+
+## 关键知识点
+{{llm1.text}}
+
+## 详细总结
+{{llm2.text}}
+
+## 学习建议
+{{llm3.text}}
+
+---
+*由 AI 助手生成*</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 End 节点可以使用 Markdown 格式化最终输出
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.7 测试运行 -->
+            <section class="scrollable-slide">
+                <h2>🧪 测试工作流</h2>
+                <p class="small-text">看看效果如何</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>测试输入示例：</strong></p>
+                    <div class="example-box" style="padding: 20px; font-size: 0.75em; background: rgba(255,255,255,0.05);">
+<pre style="margin: 0; text-align: left; white-space: pre-wrap;"><code>光合作用是植物利用光能，将二氧化碳和水转化为有机物，并释放氧气的过程。
+这个过程主要发生在叶绿体中。光合作用分为光反应和暗反应两个阶段。
+光反应需要光能，在类囊体薄膜上进行，产生 ATP 和 NADPH。
+暗反应在叶绿体基质中进行，利用光反应产生的 ATP 和 NADPH，
+通过卡尔文循环将 CO2 固定成有机物。</code></pre>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>运行步骤：</strong></p>
+                    <div style="text-align: left; font-size: 0.75em; line-height: 2; padding-left: 30px;">
+                        <p>1. 点击右上角 <strong>"运行"</strong></p>
+                        <p>2. 在输入框粘贴测试文本</p>
+                        <p>3. 点击 <strong>"开始运行"</strong></p>
+                        <p>4. 观察每个节点的执行状态</p>
+                        <p>5. 查看最终输出</p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; color: var(--highlight-color);">
+                        💡 可以看到数据在节点间流动，每个节点的输出都可以点击查看
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.8 调试技巧 -->
+            <section class="scrollable-slide">
+                <h2>🐛 调试技巧</h2>
+                <p class="small-text">遇到问题怎么办</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>1. 查看节点输出</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                点击每个节点，查看实际输出内容，看是否符合预期
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>2. 检查变量引用</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                确保 <code>{{变量名}}</code> 拼写正确，节点名称匹配
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>3. 分步测试</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                先测试前两个节点，确认正常后再添加后续节点
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>4. 优化 Prompt</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                如果输出不理想，调整 Prompt 的措辞和要求
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>5. 查看执行日志</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                右下角有详细的执行日志，显示每一步的耗时和状态
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 调试是正常的，不要怕出错！
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4.9 动手实践 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>👥 动手时间：搭建学习助手</h2>
+                <p class="small-text">20-25 分钟</p>
+
+                <div style="margin-top: 40px;">
+                    <div class="practice-box" style="padding: 25px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <h4 style="font-size: 1em; margin-bottom: 20px;">🎯 任务</h4>
+                        <p style="font-size: 0.85em; line-height: 2; text-align: left;">
+                            1. 创建新的 Workflow："学习资料助手"<br/>
+                            2. 按照刚才的设计添加所有节点<br/>
+                            3. 配置每个 LLM 节点的 Prompt<br/>
+                            4. 连接所有节点<br/>
+                            5. 使用示例文本测试<br/>
+                            6. 调试并优化输出效果
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 完成后可以尝试用自己的学习资料测试<br/>
+                        （历史课文、物理公式、英语语法等）
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 5. 进阶功能 ========== -->
+
+            <!-- 5.1 条件分支 (IF/ELSE) -->
+            <section class="scrollable-slide">
+                <h2>🔀 进阶：条件分支</h2>
+                <p class="small-text">根据条件走不同路径</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 0.95em;">IF/ELSE 节点</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            根据条件判断，让工作流走不同的分支<br/>
+                            就像编程中的 <code>if...else...</code>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>应用场景示例：</strong></p>
+                    <div class="example-box" style="padding: 20px; font-size: 0.8em;">
+                        <p style="margin: 0; line-height: 1.8;">
+                            判断输入文本长度：<br/>
+                            • 如果 <strong>少于 500 字</strong> → 直接生成总结<br/>
+                            • 如果 <strong>超过 500 字</strong> → 先分段，再分别总结
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.85em; color: var(--highlight-color);">
+                        💡 这样可以针对不同情况采用不同的处理策略
+                    </p>
+                </div>
+            </section>
+
+            <!-- 5.2 知识库集成 -->
+            <section class="scrollable-slide">
+                <h2>📚 进阶：知识库集成</h2>
+                <p class="small-text">让 AI 能检索你的专属资料</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 0.95em;">Knowledge 节点</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            上传文档到知识库，AI 可以检索相关内容<br/>
+                            实现 <strong>RAG（检索增强生成）</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>使用步骤：</strong></p>
+                    <div style="text-align: left; font-size: 0.8em; line-height: 2; padding-left: 30px;">
+                        <p>1. 在 Dify 中创建知识库</p>
+                        <p>2. 上传 PDF、Word、TXT 等文档</p>
+                        <p>3. 系统自动分块和向量化</p>
+                        <p>4. 在工作流中添加 Knowledge 节点</p>
+                        <p>5. 配置检索条件（关键词、相似度等）</p>
+                        <p>6. 将检索结果传递给 LLM</p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p style="font-size: 0.8em; color: var(--highlight-color);">
+                        💡 适合构建"专属领域助手"（如校内资料助手、企业知识库等）
+                    </p>
+                </div>
+            </section>
+
+            <!-- 5.3 外部工具调用 -->
+            <section class="scrollable-slide">
+                <h2>🔧 进阶：外部工具调用</h2>
+                <p class="small-text">让工作流能力更强大</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="ai-detail-box" style="padding: 20px;">
+                        <h4 style="font-size: 0.95em;">Tool 节点</h4>
+                        <p style="font-size: 0.85em; line-height: 1.8;">
+                            调用外部 API 和服务<br/>
+                            让 AI 具备"动手能力"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 15px;"><strong>常用工具：</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🌐 网络搜索</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">实时获取最新信息</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🌤️ 天气查询</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">获取天气数据</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📊 数据库操作</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">读写外部数据</p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📧 发送邮件</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">自动发送通知</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 25px;">
+                    <p class="highlight" style="font-size: 0.8em; padding: 10px;">
+                        💡 Tool 节点让 AI 从"思考"到"行动"
+                    </p>
+                </div>
+            </section>
+
+            <!-- 5.4 变量管理技巧 -->
+            <section class="scrollable-slide">
+                <h2>📦 变量管理技巧</h2>
+                <p class="small-text">让数据流动更高效</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; gap: 15px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>1. 命名规范</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                使用清晰的变量名：<code>user_input</code>、<code>summary_text</code><br/>
+                                避免：<code>x</code>、<code>data1</code>、<code>temp</code>
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>2. 节点命名</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                给节点起有意义的名字：<code>extract_keypoints</code>、<code>generate_summary</code><br/>
+                                这样引用变量时更清楚：<code>{{extract_keypoints.text}}</code>
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>3. 中间变量</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                可以添加 <strong>Variable</strong> 节点存储中间结果<br/>
+                                用于复杂的数据转换和组合
+                            </p>
+                        </div>
+
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border-left: 4px solid var(--primary-color); border-radius: 5px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px; color: var(--primary-color);"><strong>4. 数据类型</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                注意变量类型：文本（String）、数字（Number）、JSON 对象<br/>
+                                类型不匹配会导致错误
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== 6. 发布与部署 ========== -->
+
+            <!-- 6.1 发布应用 -->
+            <section class="scrollable-slide">
+                <h2>🚀 发布应用</h2>
+                <p class="small-text">让别人也能用</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.9em; margin-bottom: 20px;"><strong>发布选项：</strong></p>
+                    <div style="display: grid; gap: 20px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px; color: var(--primary-color);">🌐 Web 应用</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>生成一个公开链接</li>
+                                <li>任何人都可以访问使用</li>
+                                <li>可以自定义界面样式</li>
+                            </ul>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px; color: var(--primary-color);">🔌 API 接口</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>生成 API Key 和调用文档</li>
+                                <li>其他程序可以调用</li>
+                                <li>集成到现有系统中</li>
+                            </ul>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.1); border: 2px solid rgba(0,212,255,0.3); border-radius: 10px;">
+                            <h3 style="font-size: 0.9em; margin-bottom: 15px; color: var(--primary-color);">🤖 聊天机器人</h3>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>嵌入到网站</li>
+                                <li>集成到微信、Discord 等</li>
+                                <li>提供对话式交互</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6.2 分享与协作 -->
+            <section class="scrollable-slide">
+                <h2>👥 分享与协作</h2>
+                <p class="small-text">与他人一起优化工作流</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; gap: 20px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>🔗 分享链接</strong></p>
+                            <p style="font-size: 0.75em; line-height: 1.8; color: #aaa;">
+                                复制应用链接，发给朋友测试<br/>
+                                可以设置访问权限（公开/私有）
+                            </p>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>👨‍👩‍👧‍👦 团队协作</strong></p>
+                            <p style="font-size: 0.75em; line-height: 1.8; color: #aaa;">
+                                邀请团队成员共同编辑<br/>
+                                支持版本历史，可以回滚
+                            </p>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>📊 使用分析</strong></p>
+                            <p style="font-size: 0.75em; line-height: 1.8; color: #aaa;">
+                                查看应用使用统计<br/>
+                                了解用户行为，优化体验
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="font-size: 0.8em; color: var(--highlight-color);">
+                        💡 Dify 鼓励分享和协作，快速迭代优化
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========== 7. 总结与延伸 ========== -->
+
+            <!-- 7.1 今天学到了什么 -->
+            <section class="scrollable-slide">
+                <h2>🎓 今天的收获</h2>
+                <p class="small-text">Class 3 知识点总结</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div class="summary-box" style="padding: 25px; background: rgba(0,212,255,0.1); border-radius: 10px;">
+                        <ul style="text-align: left; font-size: 0.9em; line-height: 2;">
+                            <li><strong>Dify 基础</strong>：界面、节点、连接、变量</li>
+                            <li><strong>工作流设计</strong>：将任务拆解为节点流程</li>
+                            <li><strong>节点配置</strong>：LLM、Knowledge、Tool 等</li>
+                            <li><strong>数据流动</strong>：变量引用和传递</li>
+                            <li><strong>调试技巧</strong>：查看输出、分步测试</li>
+                            <li><strong>发布部署</strong>：Web、API、Bot 多种形式</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 35px;">
+                    <div style="background: rgba(255,217,61,0.1); padding: 20px; border-radius: 10px; border: 2px solid var(--highlight-color);">
+                        <p style="font-size: 0.95em; line-height: 1.8; color: var(--highlight-color);">
+                            <strong>🔑 核心能力：</strong><br/>
+                            你现在能够<strong>无需编程</strong>，<br/>
+                            搭建出真正有用的 AI 应用！
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7.2 实际应用场景 -->
+            <section class="scrollable-slide">
+                <h2>💡 更多应用场景</h2>
+                <p class="small-text">Dify 可以做什么</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>📚 教育场景</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                • 作业批改助手<br/>
+                                • 个性化学习建议<br/>
+                                • 知识点梳理工具
+                            </p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>💼 办公场景</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                • 会议纪要生成<br/>
+                                • 邮件自动回复<br/>
+                                • 文档自动分类
+                            </p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🎨 创作场景</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                • 文案生成助手<br/>
+                                • 创意灵感工具<br/>
+                                • 自动排版系统
+                            </p>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 8px;">
+                            <p style="font-size: 0.8em; margin-bottom: 8px;"><strong>🏠 生活场景</strong></p>
+                            <p style="font-size: 0.7em; color: #aaa;">
+                                • 健康记录分析<br/>
+                                • 日程智能提醒<br/>
+                                • 理财建议助手
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <p class="highlight" style="font-size: 0.85em; padding: 12px;">
+                        💡 只要能拆解成步骤的任务，都可以用 Dify 实现
+                    </p>
+                </div>
+            </section>
+
+            <!-- 7.3 课后挑战 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                <h2>🏆 课后挑战</h2>
+                <p class="small-text">继续练习和探索</p>
+
+                <div style="margin-top: 40px;">
+                    <div style="display: grid; gap: 25px;">
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.9em; margin-bottom: 10px;"><strong>🥉 基础挑战</strong></p>
+                            <p style="font-size: 0.8em; line-height: 1.8;">
+                                优化今天的"学习助手"，添加更多功能<br/>
+                                （如：生成思维导图、提供习题等）
+                            </p>
+                        </div>
+
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.9em; margin-bottom: 10px;"><strong>🥈 进阶挑战</strong></p>
+                            <p style="font-size: 0.8em; line-height: 1.8;">
+                                创建一个"智能问答助手"<br/>
+                                集成知识库，能回答特定领域问题
+                            </p>
+                        </div>
+
+                        <div class="fragment" style="padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p style="font-size: 0.9em; margin-bottom: 10px;"><strong>🥇 高级挑战</strong></p>
+                            <p style="font-size: 0.8em; line-height: 1.8;">
+                                做一个解决实际问题的应用<br/>
+                                发布给同学/老师使用，收集反馈迭代
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fragment" style="margin-top: 40px;">
+                    <p style="font-size: 0.9em; color: var(--highlight-color);">
+                        💡 记得分享你的作品，互相学习！
+                    </p>
+                </div>
+            </section>
+
+            <!-- 7.4 延伸学习 -->
+            <section class="scrollable-slide">
+                <h2>🚀 继续学习</h2>
+                <p class="small-text">深入 AI 应用开发</p>
+
+                <div class="fragment" style="margin-top: 30px;">
+                    <div style="display: grid; gap: 20px;">
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>📚 深入 Dify</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>官方文档：docs.dify.ai</li>
+                                <li>社区示例：探索其他人的工作流</li>
+                                <li>插件开发：自定义节点</li>
+                            </ul>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>🔧 学习其他工具</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>Coze：对话式 Bot 构建</li>
+                                <li>Langchain：编程式 LLM 开发</li>
+                                <li>n8n / Zapier：自动化工作流</li>
+                            </ul>
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px;">
+                            <p style="font-size: 0.85em; margin-bottom: 10px;"><strong>💻 编程进阶</strong></p>
+                            <ul style="text-align: left; font-size: 0.75em; line-height: 1.8;">
+                                <li>学习 Python：直接调用 LLM API</li>
+                                <li>了解向量数据库：构建 RAG 系统</li>
+                                <li>前端开发：自定义 AI 应用界面</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 结束页 -->
+            <section class="scrollable-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+                <h2>🎉 Class 3 完成！</h2>
+
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.1em; line-height: 1.8; color: var(--primary-color);">
+                        恭喜你掌握了<strong>无代码 AI 应用开发</strong>！
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="font-size: 0.95em; line-height: 1.8;">
+                        从今天开始，你可以：<br/>
+                        ✅ 设计和搭建 AI 工作流<br/>
+                        ✅ 组合多个 AI 能力<br/>
+                        ✅ 发布真正能用的应用<br/>
+                        ✅ 解决实际生活问题
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p style="font-size: 1.2em; color: var(--highlight-color);">
+                        💭 记住：<br/>
+                        AI 是工具，创造力是你的<br/>
+                        <strong>去做些有趣的事情吧！</strong>
+                    </p>
+                </div>
+
+                <div class="fragment" style="margin-top: 60px;">
+                    <p class="small-text">
+                        感谢参与！🚀
+                    </p>
+                </div>
+            </section>
+
+            <!-- Navigation Page -->
+            <section class="scrollable-slide">
+                <h2>📚 课程导航</h2>
+                <div style="margin-top: 60px;">
+                    <div style="margin-bottom: 30px;">
+                        <a href="index.html" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2em; transition: transform 0.3s;">
+                            🏠 返回主页
+                        </a>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <a href="interlude-capabilities.html" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2em; transition: transform 0.3s;">
+                            ◀️ 上一课：LLM 的能力拼图
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="node_modules/reveal.js/dist/reveal.js"></script>
+    <script type="module">
+        Reveal.initialize({
+            hash: true,
+            center: true,
+            transition: 'slide',
+            slideNumber: true,
+            controls: true,
+            progress: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            navigationMode: 'default',
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: true,
+            embedded: false,
+            help: true,
+            pause: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoAnimate: true,
+            autoAnimateMatcher: null,
+            autoAnimateDuration: 1.0,
+            autoAnimateUnmatched: true,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>
